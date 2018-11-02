@@ -1,4 +1,4 @@
-OnboardingMemberViaSMS.puml@startuml
+@startuml
 skinparam maxmessagesize 200
 box "Credit Union domain of control" #lightblue
 participant "Call Center" as cca
