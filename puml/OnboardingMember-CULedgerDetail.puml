@@ -1,4 +1,4 @@
-@startuml
+OnboardingMemberViaSMS.puml@startuml
 skinparam maxmessagesize 200
 box "Credit Union domain of control" #lightblue
 participant "Call Center" as cca
@@ -7,11 +7,14 @@ participant "Enterprise Backend (VCX)" as cu
 end box
 
 participant "Enterprise Cloud Agent" as cuag
+/'
 database "Branch.io" as bra
 box "Evernym Agency" #lightgreen
 participant "Agency Agent" as agag
 participant "Personal Cloud Agent" as conag
 end box
+'/
+
 participant "Connect.Me" as con
 actor "Joe &\nhis phone" as joe
 
@@ -26,10 +29,15 @@ Assumptions
 end note
 autonumber
 cca -> cuid: /onboard(...)
+cuid -> cuid: Onboarding information (temporarily?) stored including SMS number.
 cuid -> cu: Member has been created and pairwise DID created for CU portion of pairwise relationship
 cu -> cuag: "Here is a new private-pairwise DID I'm using for a new connection invitation, and I want to send it via SMS."
+/'
+
 cuag -> cuag: Decides on new or existing endpoint for callback (when invite gets accepted, this is where the acceptor will go to find the invitation info) & generates a callback url
 cuag -> agag: "Please store this callback url for a new connection invitation I want to send out, and pls give me a url to use in the invitation"
+
+
 agag -> agag: Generates tokenized url
 agag -> bra: Stores token and callback url from CU
 bra -> agag: Returns success
@@ -69,11 +77,14 @@ conag -> cuag: \nStores new relationship info & Forwards
 else
 cuag -> cu: \nStores new relationship info & Forwards
 end
+'/
+cuag -> cuag: Evernym VCX connection stuff (lots of it) happens...\n1. Member receives link to install app.\n2. Member installs Connect.Me.\n3. Connect.Me connects to CULedger.Identity via Agents.
+cuag -> cu: \nStores new relationship info & Forwards
 cu -> cuid: Stores Member's pairwise DID pairwise info
 cuid -> cca: notifies CCA that Member is Onboarded (i.e. has Credential)
 
 skinparam arrowsize 10
-cu o<-[#green]>o con: Pairwise unique relationship established based on Sovrin DIDs
+cuid o<-[#green]>o con: Pairwise unique relationship established based on Sovrin DIDs
 note over cu, joe #green
 <color: white><size: 30>Joe has a pairwise relationship with his Credit Union!</size></color>
 end note
