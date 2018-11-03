@@ -48,10 +48,10 @@ package "class 6" <<rectangle>> {
 }
 
 note left of CallCenterApp
-Happy client whose
-           job just became
-           easier because of
-           the facade.
+  Happy client whose
+  job just became
+  easier because of
+  the facade.
 end note
 
 note right of FacadeForAPI
