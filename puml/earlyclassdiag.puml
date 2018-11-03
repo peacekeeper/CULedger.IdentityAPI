@@ -10,46 +10,52 @@ CallCenterApp -> FacadeForAPI
 
 package "Internal" <<rectangle>> {
 
-note "More complex subsystem" as n1
+  FacadeForAPI -- "memberHandler"
+  FacadeForAPI -- "credentialHandler"
 
-FacadeForAPI -- "memberHandler"
-FacadeForAPI -- "credentialHandler"
+  class memberHandler {
+    {method} Connect(memberDID, institutionDID)
+    {method} SendCredential(Cred, memberDID)
+  }
 
-class memberHandler {
-  {method} Connect(memberDID, institutionDID)
-  {method} SendCredential(Cred, memberDID)
-}
+  class "credentialHandler" {
+    {method} CreateCredential(credData)
 
-class "credentialHandler" {
-  {method} CreateCredential(credData)
+  }
 
-}
+  class "configuration" {
+    {field} CredDefSeqNo
+    {field} logoURL
+    {field} InstitutionName
+    {field} ...
 
-package "member" <<rectangle>> {
-}
+  }
 
-package "Mapper" <<rectangle>> {
-}
+  package "member" <<rectangle>> {
+  }
 
-package "class 4" <<rectangle>> {
-}
+  package "Mapper" <<rectangle>> {
+  }
 
-package "class 5" <<rectangle>> {
-}
+  'package "class 4" <<rectangle>> {
+  '}
 
-package "class 6" <<rectangle>> {
-}
+  package "class 5" <<rectangle>> {
+  }
 
-"memberHandler" -- "member"
-"memberHandler" -- "Mapper"
-"member" -- "class 4"
-"Mapper" -- "class 5"
-"Mapper" -- "class 6"
-"class 4" -- "class 5"
-"class 4" -- "class 6"
-note right of Mapper
-  Maps DIDs to MemberId
-end note
+  package "class 6" <<rectangle>> {
+  }
+
+  "memberHandler" -- "member"
+  "memberHandler" -- "Mapper"
+  '"member" -- "class 4"
+  "Mapper" -- "class 5"
+  "Mapper" -- "class 6"
+  ' "class 4" -- "class 5"
+  ' "class 4" -- "class 6"
+  note right of Mapper
+    Maps DIDs to MemberId
+  end note
 
 }
 
