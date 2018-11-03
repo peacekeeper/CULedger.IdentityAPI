@@ -16,17 +16,19 @@ FacadeForAPI -- "memberHandler"
 FacadeForAPI -- "credentialHandler"
 
 class memberHandler {
-
+  {method} Connect(memberDID, institutionDID)
+  {method} SendCredential(Cred, memberDID)
 }
 
 class "credentialHandler" {
+  {method} CreateCredential(credData)
 
 }
 
-package "class 2" <<rectangle>> {
+package "member" <<rectangle>> {
 }
 
-package "class 3" <<rectangle>> {
+package "Mapper" <<rectangle>> {
 }
 
 package "class 4" <<rectangle>> {
@@ -38,14 +40,19 @@ package "class 5" <<rectangle>> {
 package "class 6" <<rectangle>> {
 }
 
-"memberHandler" -- "class 2"
-"memberHandler" -- "class 3"
-"class 2" -- "class 4"
-"class 3" -- "class 5"
-"class 3" -- "class 6"
+"memberHandler" -- "member"
+"memberHandler" -- "Mapper"
+"member" -- "class 4"
+"Mapper" -- "class 5"
+"Mapper" -- "class 6"
 "class 4" -- "class 5"
 "class 4" -- "class 6"
+note right of Mapper
+  Maps DIDs to MemberId
+end note
+
 }
+
 
 note left of CallCenterApp
   Happy client whose
