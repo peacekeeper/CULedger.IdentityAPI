@@ -1,11 +1,10 @@
 @startuml
 class CallCenterApp
 class FacadeForAPI {
-  {method} memberOnboard(memberId)
+  {method} memberOnboard(memberId, CredentialData)
   {method} memberAuthenticate(memberId)
-  {method} createCredential(...)
-
 }
+
 CallCenterApp -> FacadeForAPI
 
 package "Internal" <<rectangle>> {
@@ -57,6 +56,12 @@ package "Internal" <<rectangle>> {
     Maps DIDs to MemberId
   end note
 
+
+  note bottom of credentialHandler
+   DECISIONS:
+   Will we store copies of Credentials? only TEMPORARILY
+   Will external apps need to create credential? NO
+  end note
 }
 
 
@@ -71,4 +76,7 @@ note right of FacadeForAPI
 Unified interface
 that is easier to use.
 end note
+
+
+
 @enduml
