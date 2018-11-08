@@ -1,0 +1,39 @@
+
+<h2>CULedger.Message</h2>
+<ul class="parameter">
+  <li class="param-required-true">messageId : String
+    <br/>identifier for message (generated outside of system)
+  </li>
+</ul>
+<ul class="parameter">
+  <li class="param-required-true">memberId : String
+    <br/>
+  </li>
+</ul>
+<ul class="parameter">
+  <li class="param-required-true">messageText : String
+    <br/>message that will be displayed to the user. (multi-line text)
+  </li>
+</ul>
+<ul class="parameter">
+  <li class="param-required-false">messageInstructions : String
+    <br/>We need you Confirm or Deny the following request while you are speaking to Susan from the credit union. To Confirm, please press the Confirm button.
+  </li>
+</ul>
+<ul class="parameter">
+  <li class="param-required-false">messageSigningType : String
+    <br/>Defines the types of signatures allowed:   1. none;   2. simple button press;   3. Biometric (e.g. Apple Touch ID, Apple Face ID, fingerprint ) 
+      <dl class="param-enum">
+        <dt>Enum:
+            <dd>noSignature</dd>
+            <dd>basicSignature</dd>
+            <dd>biometricSignature</dd>
+        </dt>
+      </dl>
+  </li>
+</ul>
+<ul class="parameter">
+  <li class="param-required-false">messageSigningPayload : String
+    <br/>data that will be signed.
+  </li>
+</ul>

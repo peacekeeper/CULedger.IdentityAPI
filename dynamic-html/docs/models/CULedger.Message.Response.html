@@ -1,0 +1,30 @@
+
+<h2>CULedger.Message.Response</h2>
+<ul class="parameter">
+  <li class="param-required-true">messageId : String
+    <br/>identifier for message (generated outside of system)
+  </li>
+</ul>
+<ul class="parameter">
+  <li class="param-required-false">status : String
+    <br/>indicates the message state.
+      <dl class="param-enum">
+        <dt>Enum:
+            <dd>inProcess</dd>
+            <dd>signed</dd>
+            <dd>denied</dd>
+            <dd>failure</dd>
+        </dt>
+      </dl>
+  </li>
+</ul>
+<ul class="parameter">
+  <li class="param-required-false">signedPayload : String
+    <br/>data that was signed.
+  </li>
+</ul>
+<ul class="parameter">
+  <li class="param-required-false">signature : String
+    <br/>digital signature of the message as received from Member.
+  </li>
+</ul>
