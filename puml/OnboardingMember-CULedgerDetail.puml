@@ -19,13 +19,11 @@ participant "Connect.Me" as con
 actor "Joe &\nhis phone" as joe
 
 
-title Credit Union invites Member to install Connect.Me and connect with them - Tyler Ruff—Evernym
+title MSR Invites Member to connect via CULedger.Identity - CULedger Detail
 
 note over cu, con
 Assumptions
 1. CU Enterprise Agent and Evernym Agency Agent have a pairwise relationship.
-2. Connect.Me only reads links from https://connect.me.app.link which is hosted at branch.io
-3. Branch.io is used to store the token and device specific information
 end note
 autonumber
 cca -> cuid: /onboard(...)
@@ -79,14 +77,15 @@ cuag -> cu: \nStores new relationship info & Forwards
 end
 '/
 cuag -> cuag: Evernym VCX connection stuff (lots of it) happens...\n1. Member receives link to install app.\n2. Member installs Connect.Me.\n3. Connect.Me connects to CULedger.Identity via Agents.
-cuag -> cu: \nStores new relationship info & Forwards
-cu -> cuid: Stores Member's pairwise DID pairwise info
+cuag -> cu: Stores new relationship info & Forwards
+cu -> cuid: forwards Member's private DID
+cuid -> cuid: Member information updated to <onboarded> state
 cuid -> cca: notifies CCA that Member is Onboarded (i.e. has Credential)
 
 skinparam arrowsize 10
 cuid o<-[#green]>o con: Pairwise unique relationship established based on Sovrin DIDs
-note over cu, joe #green
-<color: white><size: 30>Joe has a pairwise relationship with his Credit Union!</size></color>
+note over cca, joe
+Joe has a pairwise relationship with his Credit Union!
 end note
 
 @enduml

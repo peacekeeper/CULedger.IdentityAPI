@@ -16,7 +16,7 @@ participant "Connect.Me" as con
 actor "Joe &\nhis phone" as joe
 
 
-title Credit Union invites Member to install Connect.Me and connect with them - Tyler Ruff—Evernym
+title MSR Invites Member to connect via CULedger.Identity - Evernym Detail
 
 note over cu, con
 Assumptions
@@ -69,13 +69,13 @@ conag -> cuag: \nStores new relationship info & Forwards
 else
 cuag -> cu: \nStores new relationship info & Forwards
 end
-cu -> cuid: Stores Member's pairwise DID pairwise info
+cu -> cuid: Stores Member's pairwise DID pairwise info, etc.
 cuid -> cca: notifies CCA that Member is Onboarded (i.e. has Credential)
 
 skinparam arrowsize 10
 cu o<-[#green]>o con: Pairwise unique relationship established based on Sovrin DIDs
-note over cu, joe #green
-<color: white><size: 30>Joe has a pairwise relationship with his Credit Union!</size></color>
+note over cu, joe
+<bold>Joe has a pairwise relationship with his Credit Union!</bold>
 end note
 
 @enduml
