@@ -1,0 +1,883 @@
+<!doctype html>
+<html>
+  <head>
+    <title>CULedger Identity API</title>
+    <style type="text/css">
+      body {
+      	font-family: Trebuchet MS, sans-serif;
+      	font-size: 15px;
+      	color: #444;
+      	margin-right: 24px;
+      }
+      
+      h1	{
+      	font-size: 25px;
+      }
+      h2	{
+      	font-size: 20px;
+      }
+      h3	{
+      	font-size: 16px;
+      	font-weight: bold;
+      }
+      hr	{
+      	height: 1px;
+      	border: 0;
+      	color: #ddd;
+      	background-color: #ddd;
+      }
+      
+      .app-desc {
+        clear: both;
+        margin-left: 20px;
+      }
+      .param-name {
+        width: 100%;
+      }
+      .license-info {
+        margin-left: 20px;
+      }
+      
+      .license-url {
+        margin-left: 20px;
+      }
+      
+      .model {
+        margin: 0 0 0px 20px;
+      }
+      
+      .method {
+        margin-left: 20px;
+      }
+      
+      .method-notes	{
+      	margin: 10px 0 20px 0;
+      	font-size: 90%;
+      	color: #555;
+      }
+      
+      pre {
+        padding: 10px;
+        margin-bottom: 2px;
+      }
+      
+      .http-method {
+       text-transform: uppercase;
+      }
+      
+      pre.get {
+        background-color: #0f6ab4;
+      }
+      
+      pre.post {
+        background-color: #10a54a;
+      }
+      
+      pre.put {
+        background-color: #c5862b;
+      }
+      
+      pre.delete {
+        background-color: #a41e22;
+      }
+      
+      .huge	{
+      	color: #fff;
+      }
+      
+      pre.example {
+        background-color: #f3f3f3;
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
+      
+      code {
+        white-space: pre;
+      }
+      
+      .nickname {
+        font-weight: bold;
+      }
+      
+      .method-path {
+        font-size: 1.5em;
+        background-color: #0f6ab4;
+      }
+      
+      .up {
+        float:right;
+      }
+      
+      .parameter {
+        width: 500px;
+      }
+      
+      .param {
+        width: 500px;
+        padding: 10px 0 0 20px;
+        font-weight: bold;
+      }
+      
+      .param-desc {
+        width: 700px;
+        padding: 0 0 0 20px;
+        color: #777;
+      }
+      
+      .param-type {
+        font-style: italic;
+      }
+      
+      .param-enum-header {
+      width: 700px;
+      padding: 0 0 0 60px;
+      color: #777;
+      font-weight: bold;
+      }
+      
+      .param-enum {
+      width: 700px;
+      padding: 0 0 0 80px;
+      color: #777;
+      font-style: italic;
+      }
+      
+      .field-label {
+        padding: 0;
+        margin: 0;
+        clear: both;
+      }
+      
+      .field-items	{
+      	padding: 0 0 15px 0;
+      	margin-bottom: 15px;
+      }
+      
+      .return-type {
+        clear: both;
+        padding-bottom: 10px;
+      }
+      
+      .param-header {
+        font-weight: bold;
+      }
+      
+      .method-tags {
+        text-align: right;
+      }
+      
+      .method-tag {
+        background: none repeat scroll 0% 0% #24A600;
+        border-radius: 3px;
+        padding: 2px 10px;
+        margin: 2px;
+        color: #FFF;
+        display: inline-block;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+  <h1>CULedger Identity API</h1>
+    <div class="app-desc"><p>This is a simple Identity API mockup for CULedger. It is focused on only the Identity portions of CULedger, which will be used by multiple stakeholders in the CULedger ecosystem. It maps Members (by memberId) to the private DID Pairs that establish a privacy-respecting, secure connection between a Member and a financial institution. The machinations of Sovrin communications and credential assembly and proofing are handled internally to the CULedger Identity API.</p>
+<p>Overall, the CULedger.Identity API is intended to do only 2 things outside of configuration and monitoring.</p>
+<ol>
+<li>Allow a single function call to Onboard a Member - which contacts the member (via SMS or email), gets Connect.Me installed, and sends down a credential from the CU.</li>
+<li>Allow a single function call to later Authenticate a Member that holds the credential that was issued to them.
+The API is Member-centric - it is all about
+NOTE the API will evolve to add more capability. This initial, nearly naive, simple API is intentionally limited. The team will make an effort to avoide adding complexity unless it is fully warranted.</li>
+</ol>
+</div>
+    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">Contact Info: <a href="darrell.odonnell@continuumloop.com">darrell.odonnell@continuumloop.com</a></div>
+    <div class="app-desc">Version: 0.1.0</div>
+    <div class="app-desc">BasePath:/darrellodonnell/CULedger.Identity/0.1.0</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Developers">Developers</a></h4>
+  <ul>
+  <li><a href="#createMember"><code><span class="http-method">post</span> /member</code></a></li>
+  <li><a href="#getConfigValue"><code><span class="http-method">get</span> /config/{valueName}</code></a></li>
+  <li><a href="#getHeartbeat"><code><span class="http-method">get</span> /heartbeat</code></a></li>
+  <li><a href="#getMember"><code><span class="http-method">get</span> /member/{memberId}</code></a></li>
+  <li><a href="#listConfigSettings"><code><span class="http-method">get</span> /config</code></a></li>
+  <li><a href="#memberAuthenticate"><code><span class="http-method">put</span> /member/{memberId}/authenticate</code></a></li>
+  <li><a href="#memberOnboard"><code><span class="http-method">post</span> /member/{memberId}/onboard</code></a></li>
+  <li><a href="#setConfigValue"><code><span class="http-method">put</span> /config/{valueName}</code></a></li>
+  </ul>
+  <h4><a href="#Future">Future</a></h4>
+  <ul>
+  <li><a href="#memberSendMessage"><code><span class="http-method">post</span> /member/{memberId}/sendMessage</code></a></li>
+  </ul>
+  <h4><a href="#Internal">Internal</a></h4>
+  <ul>
+  <li><a href="#createCredential"><code><span class="http-method">post</span> /credential</code></a></li>
+  <li><a href="#getCredential"><code><span class="http-method">get</span> /credential/{id}</code></a></li>
+  <li><a href="#memberConnect"><code><span class="http-method">put</span> /member/{memberId}/connect</code></a></li>
+  <li><a href="#memberSendCredential"><code><span class="http-method">put</span> /member/{memberId}/sendCredential</code></a></li>
+  </ul>
+
+  <h1><a name="Developers">Developers</a></h1>
+  <div class="method"><a name="createMember"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /member</code></pre></div>
+    <div class="method-summary">adds a Member item (<span class="nickname">createMember</span>)</div>
+    <div class="method-notes">Adds a Member to the system</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#CULedger.Member">CULedger.Member</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    item created
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getConfigValue"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /config/{valueName}</code></pre></div>
+    <div class="method-summary">get Value of configuration setting with name valueName. (<span class="nickname">getConfigValue</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">valueName (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; valueName in valueName/value keypair </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      String
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    OK
+        <a href="#String">String</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getHeartbeat"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /heartbeat</code></pre></div>
+    <div class="method-summary">gives developer information about the health of the system. [uses /agency hook for the Agency endpoint] (<span class="nickname">getHeartbeat</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      String
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    OK | NotOK
+        <a href="#String">String</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getMember"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /member/{memberId}</code></pre></div>
+    <div class="method-summary">Returns Member with memberId. (<span class="nickname">getMember</span>)</div>
+    <div class="method-notes">...</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">memberId (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; blah blah </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      String
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    JSON Verifiable Credential (Sovrin)
+        <a href="#String">String</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="listConfigSettings"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /config</code></pre></div>
+    <div class="method-summary">provides the basic configuration information about the system. (<span class="nickname">listConfigSettings</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#CULedger.KeyPair">CULedger.KeyPair</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    OK
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="memberAuthenticate"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /member/{memberId}/authenticate</code></pre></div>
+    <div class="method-summary">Authenticates that Member has control of valid Verifiable Credential (<span class="nickname">memberAuthenticate</span>)</div>
+    <div class="method-notes">By passing in the appropriate options, you can search forMember by MemberID, DID, TBD. Parameters here are BOGUS.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">memberId (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; pass an optional search string for looking up Members </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#CULedger.Member">CULedger.Member</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        <a href="#CULedger.Member">CULedger.Member</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="memberOnboard"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /member/{memberId}/onboard</code></pre></div>
+    <div class="method-summary">Connects to Member and sends Credential to them. (<span class="nickname">memberOnboard</span>)</div>
+    <div class="method-notes">At low level connects to Member (via private-DID-pair) and sends their Credential.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">memberId (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Member (identitified by memberID) that we are onboarding. </div>    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#CULedger.Onboarding.Data">CULedger.Onboarding.Data</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#CULedger.Onboarding.Data">CULedger.Onboarding.Data</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        <a href="#CULedger.Onboarding.Data">CULedger.Onboarding.Data</a>
+    <h4 class="field-label">400</h4>
+    bad input parameter
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="setConfigValue"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /config/{valueName}</code></pre></div>
+    <div class="method-summary">get Value of configuration setting with name valueName. (<span class="nickname">setConfigValue</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">valueName (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; valueName in valueName/value keypair </div>    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#string">string</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      String
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    OK
+        <a href="#String">String</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Future">Future</a></h1>
+  <div class="method"><a name="memberSendMessage"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /member/{memberId}/sendMessage</code></pre></div>
+    <div class="method-summary">Connects to Member and sends Message (<span class="nickname">memberSendMessage</span>)</div>
+    <div class="method-notes">At low level connects to Member (via private-DID-pair) and sends their Credential.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">memberId (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Member (identitified by memberID) that we are onboarding. </div>    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#CULedger.Message">CULedger.Message</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#CULedger.Message.Response">CULedger.Message.Response</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        <a href="#CULedger.Message.Response">CULedger.Message.Response</a>
+    <h4 class="field-label">400</h4>
+    bad input parameter
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Internal">Internal</a></h1>
+  <div class="method"><a name="createCredential"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /credential</code></pre></div>
+    <div class="method-summary">creates a credential (<span class="nickname">createCredential</span>)</div>
+    <div class="method-notes">Adds an item to the system</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#CULedger.Credential.Basic">CULedger.Credential.Basic</a> (optional)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    item created
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    invalid input, object invalid
+        <a href="#"></a>
+    <h4 class="field-label">409</h4>
+    an existing item already exists
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getCredential"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /credential/{id}</code></pre></div>
+    <div class="method-summary">returns Credential that matches input id. (<span class="nickname">getCredential</span>)</div>
+    <div class="method-notes">...</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; id of the credential we&#x27;re looking at. </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      String
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    JSON Verifiable Credential (Sovrin)
+        <a href="#String">String</a>
+    <h4 class="field-label">400</h4>
+    bad input parameter
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="memberConnect"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /member/{memberId}/connect</code></pre></div>
+    <div class="method-summary">Makes initial connection to the member (<span class="nickname">memberConnect</span>)</div>
+    <div class="method-notes">Begins connection</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">memberId (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; pass an optional search string for looking up Members </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      String
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        <a href="#String">String</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="memberSendCredential"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /member/{memberId}/sendCredential</code></pre></div>
+    <div class="method-summary">Makes initial connection to the member (<span class="nickname">memberSendCredential</span>)</div>
+    <div class="method-notes">Sends credential to Member</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">memberId (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; pass an optional search string for looking up Members </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      String
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        <a href="#String">String</a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#CULedger.Credential.Basic"><code>CULedger.Credential.Basic</code></a></li>
+    <li><a href="#CULedger.DDO"><code>CULedger.DDO</code></a></li>
+    <li><a href="#CULedger.KeyPair"><code>CULedger.KeyPair</code></a></li>
+    <li><a href="#CULedger.Member"><code>CULedger.Member</code></a></li>
+    <li><a href="#CULedger.Message"><code>CULedger.Message</code></a></li>
+    <li><a href="#CULedger.Message.Response"><code>CULedger.Message.Response</code></a></li>
+    <li><a href="#CULedger.Onboarding.Data"><code>CULedger.Onboarding.Data</code></a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="CULedger.Credential.Basic"><code>CULedger.Credential.Basic</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> The unique identifier of this credential. </div>
+<div class="param">memberId </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> MemberId in the FIs system (often called Member Number), stored as string for flexibility. </div>
+<div class="param">status (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> dasdfasdf </div>
+<div class="param">memberSince (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">credDataPayload </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CULedger.DDO"><code>CULedger.DDO</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">DID </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">institutionPrivateKey (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CULedger.KeyPair"><code>CULedger.KeyPair</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">valueName (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">value (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CULedger.Member"><code>CULedger.Member</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">memberPrivateDID </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">memberId </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> If provided by FI this is the Member&#x27;s Identifier in the external system. Otherwise it is system generated. See CONFIG_DETAIL.ID_TYPE </div>
+<div class="param">memberDDO (optional)</div><div class="param-desc"><span class="param-type"><a href="#CULedger.DDO">CULedger.DDO</a></span>  </div>
+<div class="param">institutionPrivateKey (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">memberStatus (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+        <div class="param-enum-header">Enum:</div>
+        <div class="param-enum">new</div><div class="param-enum">onboarded</div><div class="param-enum">onboarding</div><div class="param-enum">revoked</div><div class="param-enum">unknown</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CULedger.Message"><code>CULedger.Message</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">messageId </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> identifier for message (generated outside of system) </div>
+<div class="param">memberId </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">messageText </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> message that will be displayed to the user. (multi-line text) </div>
+<div class="param">messageInstructions (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> We need you Confirm or Deny the following request while you are speaking to Susan from the credit union. To Confirm, please press the Confirm button. </div>
+<div class="param">messageSigningType (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> &lt;p&gt;Defines the types of signatures allowed:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;none;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;simple button press;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Biometric (e.g. Apple Touch ID, Apple Face ID, fingerprint )&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+ </div>
+        <div class="param-enum-header">Enum:</div>
+        <div class="param-enum">noSignature</div><div class="param-enum">basicSignature</div><div class="param-enum">biometricSignature</div>
+<div class="param">messageSigningPayload (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> data that will be signed. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CULedger.Message.Response"><code>CULedger.Message.Response</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">messageId </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> identifier for message (generated outside of system) </div>
+<div class="param">status (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> indicates the message state. </div>
+        <div class="param-enum-header">Enum:</div>
+        <div class="param-enum">inProcess</div><div class="param-enum">signed</div><div class="param-enum">denied</div><div class="param-enum">failure</div>
+<div class="param">signedPayload (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> data that was signed. </div>
+<div class="param">signature (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> digital signature of the message as received from Member. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CULedger.Onboarding.Data"><code>CULedger.Onboarding.Data</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">memberId </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">memberPhoneNumber (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> used internally, not part of Credential </div>
+<div class="param">memberEmail (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> used internally, not part of Credential </div>
+<div class="param">displayTextFromFI (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">credentialData (optional)</div><div class="param-desc"><span class="param-type"><a href="#CULedger.Credential.Basic">CULedger.Credential.Basic</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>
