@@ -1,0 +1,91 @@
+@startuml
+skinparam maxmessagesize 200
+box "Credit Union domain of control" #lightblue
+participant "Call Center" as cca
+participant "CULedger.Identity" as cuid
+participant "Enterprise Backend (VCX)" as cu
+end box
+
+participant "Enterprise Cloud Agent" as cuag
+/'
+database "Branch.io" as bra
+box "Evernym Agency" #lightgreen
+participant "Agency Agent" as agag
+participant "Personal Cloud Agent" as conag
+end box
+'/
+
+participant "Connect.Me" as con
+actor "Joe &\nhis phone" as joe
+
+
+title MSR Invites Member to connect via CULedger.Identity - CULedger Detail
+
+note over cu, con
+Assumptions
+1. CU Enterprise Agent and Evernym Agency Agent have a pairwise relationship.
+end note
+autonumber
+cca -> cuid: /onboard(...)
+cuid -> cuid: Onboarding information (temporarily?) stored including SMS number.
+cuid -> cu: Member has been created and pairwise DID created for CU portion of pairwise relationship
+cu -> cuag: "Here is a new private-pairwise DID I'm using for a new connection invitation, and I want to send it via SMS."
+/'
+
+cuag -> cuag: Decides on new or existing endpoint for callback (when invite gets accepted, this is where the acceptor will go to find the invitation info) & generates a callback url
+cuag -> agag: "Please store this callback url for a new connection invitation I want to send out, and pls give me a url to use in the invitation"
+
+
+agag -> agag: Generates tokenized url
+agag -> bra: Stores token and callback url from CU
+bra -> agag: Returns success
+agag -> cuag: Passes tokenized url
+cuag -> joe: Sends SMS with tokenized url and other text "UFCU wants you to install this app to get your MyCUID!"
+joe -> bra: Joe's phone clicks link which opens browser which navigates to branch.io, finds callbackurl
+bra -> bra: Associates token with Joe's phone
+bra -> joe: Redirects browser to appstore
+joe -> con: Installs & launches app
+group These are default api calls each first-time app launch triggers
+con -> agag: App calls home and asks for new cloud agent for Joe
+create conag
+agag -> conag: Creates
+conag <--> con: Pairwise connection established
+con -> bra: On first launch, app asks "I am Joe's phone, do you have anything for me?"
+end
+bra -> con: Knows Joe's phone is associated with the token, so it passes callback url & token
+con -> cuag: Hits callback url, says "here's my token, what do you have for me?"
+cuag -> con: Passes unencrypted connection invitation information in json
+note left of con
+<color:blue>Invite json looks like this</color> {
+    for_did: DID,
+    for_verkey: VERKEY,
+    eagent_key: EAGENT_KEY, #enterprise agent public key for this DID
+    signature: SIG, # of the the above key signed by Organization
+    conn_name: NAME, # of the Connection Issuer
+    logo_url: LOGO, # Url of the Avatar Image
+}
+end note
+con -> joe: Displays invitation from CU
+joe -> con: Accepts invite
+con -> con: Generates Joe' side of the pairwise relationship, stores both sides
+par2
+con -> conag: Joe is accepting CU invite, here is his pairwise acceptance details
+else
+conag -> cuag: \nStores new relationship info & Forwards
+else
+cuag -> cu: \nStores new relationship info & Forwards
+end
+'/
+cuag -> cuag: Evernym VCX connection stuff (lots of it) happens...\n1. Member receives link to install app.\n2. Member installs Connect.Me.\n3. Connect.Me connects to CULedger.Identity via Agents.
+cuag -> cu: Stores new relationship info & Forwards
+cu -> cuid: forwards Member's private DID
+cuid -> cuid: Member information updated to <onboarded> state
+cuid -> cca: notifies CCA that Member is Onboarded (i.e. has Credential)
+
+skinparam arrowsize 10
+cuid o<-[#green]>o con: Pairwise unique relationship established based on Sovrin DIDs
+note over cca, joe
+Joe has a pairwise relationship with his Credit Union!
+end note
+
+@enduml

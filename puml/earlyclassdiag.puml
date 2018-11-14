@@ -1,0 +1,84 @@
+@startuml
+class CallCenterApp
+class "CULedgerIdentityAPI"
+class FacadeForAPI {
+  {method} memberOnboard(memberId, CredentialData)
+  {method} memberAuthenticate(memberId)
+}
+
+CallCenterApp -> CULedgerIdentityAPI
+CULedgerIdentityAPI -> FacadeForAPI
+
+package "Internal" <<rectangle>> {
+
+  FacadeForAPI -- "memberHandler"
+  FacadeForAPI -- "credentialHandler"
+
+  class memberHandler {
+    {method} Connect(memberDID, institutionDID)
+    {method} SendCredential(Cred, memberDID)
+  }
+
+  class "credentialHandler" {
+    {method} CreateCredential(credData)
+
+  }
+
+  class "configuration" {
+    {field} CredDefSeqNo
+    {field} logoURL
+    {field} InstitutionName
+    {field} ...
+
+  }
+
+  package "member" <<rectangle>> {
+  }
+
+  package "Mapper" <<rectangle>> {
+  }
+
+  'package "class 4" <<rectangle>> {
+  '}
+
+  package "class 5" <<rectangle>> {
+  }
+
+  package "class 6" <<rectangle>> {
+  }
+
+  "memberHandler" -- "member"
+  "memberHandler" -- "Mapper"
+  '"member" -- "class 4"
+  "Mapper" -- "class 5"
+  "Mapper" -- "class 6"
+  ' "class 4" -- "class 5"
+  ' "class 4" -- "class 6"
+  note bottom of Mapper
+    Maps DIDs to MemberId
+  end note
+
+
+  note bottom of credentialHandler
+   DECISIONS:
+   Will we store copies of Credentials? only TEMPORARILY
+   Will external apps need to create credential? NO
+  end note
+}
+
+
+note left of CallCenterApp
+  Happy client whose
+  job just became
+  easier because of
+  the facade.
+end note
+
+note right of FacadeForAPI
+  Unified interface
+  that is easier to use.
+end note
+
+
+
+@enduml
