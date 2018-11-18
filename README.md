@@ -26,7 +26,7 @@ Open `http://localhost:8080/darrellodonnell/CULedger.Identity/0.1.0/swagger-ui.h
 
 How to onboard a member:
 
-**PUT** call to `/member/{memberId}/onboard`:
+**POST** call to `/member/{memberId}/onboard`:
 
 	{
 	    "memberId": "ms7823",
@@ -44,7 +44,7 @@ How to onboard a member:
 
 How to authenticate a member:
 
-**POST** call to `/member/{memberId}/authenticate`
+**PUT** call to `/member/{memberId}/authenticate`
 
 ## How to test using API Client
 

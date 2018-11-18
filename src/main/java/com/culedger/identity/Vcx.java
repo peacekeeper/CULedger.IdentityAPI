@@ -12,6 +12,7 @@ import com.evernym.sdk.vcx.VcxException;
 import com.evernym.sdk.vcx.connection.ConnectionApi;
 import com.evernym.sdk.vcx.credential.CredentialApi;
 import com.evernym.sdk.vcx.credentialDef.CredentialDefApi;
+import com.evernym.sdk.vcx.issuer.IssuerApi;
 import com.evernym.sdk.vcx.proof.ProofApi;
 import com.evernym.sdk.vcx.schema.SchemaApi;
 import com.evernym.sdk.vcx.vcx.VcxApi;
@@ -28,6 +29,7 @@ public class Vcx {
 	private static final Random random = new Random();
 
 	private static final String CU_DID = "SsPVi4HpA8jJx7wcTqCEQ4";
+	private static final String CU_NAME = "testcu";
 
 	private static String schemaId;
 	private static String credentialDefId;
@@ -93,9 +95,9 @@ public class Vcx {
 
 			// create connection
 
-			Integer connectionHandle = ConnectionApi.vcxConnectionCreate(memberId).get();
-			if (connectionHandle == null) throw new NullPointerException();
 			String sourceId = memberId;
+			Integer connectionHandle = ConnectionApi.vcxConnectionCreate(sourceId).get();
+			if (connectionHandle == null) throw new NullPointerException();
 
 			if (logger.isInfoEnabled()) logger.info("For source ID " + sourceId + " created connection handle " + connectionHandle);
 
@@ -135,24 +137,113 @@ public class Vcx {
 
 			if (logger.isInfoEnabled()) logger.info("Added member ID " + memberId + " with connection handle " + connectionHandle);
 
+
+
+			// wait
+
+			while (true) {
+
+				Integer connectionGetStateResult = ConnectionApi.connectionGetState(connectionHandle).get();
+
+				if (logger.isInfoEnabled()) logger.info("WAIT: For connection handle " + connectionHandle + " got state result " + connectionGetStateResult);
+
+				if (connectionGetStateResult.intValue() != 2) break;
+
+				Thread.sleep(500);
+
+				Integer connectionWaitUpdateStateResult = ConnectionApi.vcxConnectionUpdateState(connectionHandle).get();
+
+				if (logger.isInfoEnabled()) logger.info("WAIT: For connection handle " + connectionHandle + " got update state result " + connectionWaitUpdateStateResult);
+
+				Thread.sleep(500);
+			}
+
+
+
+
+
 			// create credential
 
-			String credentialOffer = credentialOffer(agentDID, CU_DID, "suncoast");
-			Integer credentialHandle = CredentialApi.credentialCreateWithOffer(sourceId, credentialOffer).get();
+			String credentialData = credentialData(CU_NAME);
+			String credentialName = "mycuidcredential";
+			Integer credentialHandle = IssuerApi.issuerCreateCredential(sourceId, credentialDefId, CU_DID, credentialData, credentialName, 0).get();
 
-			if (logger.isInfoEnabled()) logger.info("For credential offer " + credentialOffer + " created credential handle " + credentialHandle);
+			if (logger.isInfoEnabled()) logger.info("For source ID " + sourceId + " and credential def ID " + credentialDefId + " and credential data " + credentialData + " got credential handle " + credentialHandle);
 
-			// send credential
+			// send credential offer
 
-			String credentialSendRequestResult = CredentialApi.credentialSendRequest(credentialHandle, connectionHandle, 0).get();
+			Integer issuerSendCredentialOfferResult = IssuerApi.issuerSendcredentialOffer(credentialHandle, connectionHandle).get();
 
-			if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " and connection handle " + connectionHandle + " got credential send request result " + credentialSendRequestResult);
+			if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " and connection handle " + connectionHandle + " got issuer send credential offer result " + issuerSendCredentialOfferResult);
 
 			// update state
 
-			Integer credentialUpdateStateResult = CredentialApi.credentialUpdateState(credentialHandle).get();
+			Integer credentialUpdateStateResult = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();
 
 			if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " got credential update state result " + credentialUpdateStateResult);
+
+
+
+
+			// wait
+
+			while (true) {
+
+				Integer credentialWaitGetStateResult = IssuerApi.issuerCredntialGetState(credentialHandle).get();
+
+				if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + connectionHandle + " got state result " + credentialWaitGetStateResult);
+
+				if (credentialWaitGetStateResult.intValue() != 2) break;
+
+				Thread.sleep(500);
+
+				Integer credentialWaitUpdateStateResult = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();
+
+				if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + credentialHandle + " got credential update state result " + credentialWaitUpdateStateResult);
+
+				Thread.sleep(500);
+			}
+
+
+			
+			// send credential
+
+			String issuerSendCredentialResult = IssuerApi.issuerSendCredential(credentialHandle, connectionHandle).get();
+
+			if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " and connection handle " + connectionHandle + " got issuer send credential result " + issuerSendCredentialResult);
+
+			
+			
+
+			// update state
+
+			Integer credentialUpdateStateResult2 = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();
+
+			if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " got credential update state result " + credentialUpdateStateResult2);
+
+
+
+
+			// wait
+
+			while (true) {
+
+				Integer credentialWaitGetStateResult = IssuerApi.issuerCredntialGetState(credentialHandle).get();
+
+				if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + connectionHandle + " got state result " + credentialWaitGetStateResult);
+
+				if (credentialWaitGetStateResult.intValue() != 3) break;
+
+				Thread.sleep(500);
+
+				Integer credentialWaitUpdateStateResult = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();
+
+				if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + credentialHandle + " got credential update state result " + credentialWaitUpdateStateResult);
+
+				Thread.sleep(500);
+			}
+
+
 
 			// done
 
@@ -176,7 +267,7 @@ public class Vcx {
 			if (logger.isInfoEnabled()) logger.info("For member ID " + memberId + " got connection handle " + connectionHandle);
 
 			if (connectionHandle == null) return new ResponseEntity<CULedgerMember>(HttpStatus.NOT_FOUND);
-			
+
 			// create proof
 
 			String sourceId = memberId;
@@ -205,34 +296,42 @@ public class Vcx {
 		}
 	}
 
+	private static String credentialData(String cuName) {
+
+		String credentialData =
+				"{'cu':'" + cuName + "'}";
+
+		return credentialData.replace("'", "\"");
+	}
+
 	private static String requestedAttrs() {
-		
+
 		String requestedAttrs = 
 				"[{'name':'cu'}]";
 
 		return requestedAttrs.replace("'", "\"");
 	}
-	
+
 	private static String credentialOffer(String toDid, String fromDid, String cuValue) {
 
 		String credentialOffer = 
 				"[{\n" +
-				"  'msg_type': 'CLAIM_OFFER',\n" +
-				"  'version': '0.1',\n" +
-				"  'to_did': '" + toDid + "',\n" +
-				"  'from_did': '" + fromDid + "',\n" +
-				"  'libindy_offer': '{}',\n" +
-				"  'credential_attrs': {\n" +
-				"    'cu': [\n" +
-				"      '" + cuValue + "'\n" +
-				"    ]\n" +
-				"  },\n" +
-				"  'schema_seq_no': " + schemaSeqNo + ",\n" +
-				"  'cred_def_id': '" + credentialDefId + "',\n" +
-				"  'claim_name': 'Credential',\n" +
-				"  'claim_id': 'defaultCredentialId',\n" +
-				"  'msg_ref_id': ''\n" +
-				"}]";
+						"  'msg_type': 'CLAIM_OFFER',\n" +
+						"  'version': '0.1',\n" +
+						"  'to_did': '" + toDid + "',\n" +
+						"  'from_did': '" + fromDid + "',\n" +
+						"  'libindy_offer': '{}',\n" +
+						"  'credential_attrs': {\n" +
+						"    'cu': [\n" +
+						"      '" + cuValue + "'\n" +
+						"    ]\n" +
+						"  },\n" +
+						"  'schema_seq_no': " + schemaSeqNo + ",\n" +
+						"  'cred_def_id': '" + credentialDefId + "',\n" +
+						"  'claim_name': 'Credential',\n" +
+						"  'claim_id': 'defaultCredentialId',\n" +
+						"  'msg_ref_id': ''\n" +
+						"}]";
 
 		return credentialOffer.replace("'", "\"");
 	}
