@@ -1,5 +1,5 @@
 #!/bin/bash
 
-export RUST_LOG=info
+export RUST_LOG=debug
 cd /opt/api/
-mvn spring-boot:run
+mvn spring-boot:run >out 2>&1
