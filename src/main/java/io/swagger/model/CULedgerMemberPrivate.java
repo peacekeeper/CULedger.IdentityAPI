@@ -6,22 +6,29 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.CULedgerDDO;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * CULedgerMember
+ * CULedgerMemberPrivate
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-19T08:00:41.414Z[GMT]")
 
-public class CULedgerMember   {
+public class CULedgerMemberPrivate   {
   @JsonProperty("memberPrivateDID")
   private String memberPrivateDID = null;
 
   @JsonProperty("memberId")
   private String memberId = null;
+
+  @JsonProperty("memberDDO")
+  private CULedgerDDO memberDDO = null;
+
+  @JsonProperty("institutionPrivateKey")
+  private String institutionPrivateKey = null;
 
   /**
    * Gets or Sets memberStatus
@@ -63,7 +70,7 @@ public class CULedgerMember   {
   @JsonProperty("memberStatus")
   private MemberStatusEnum memberStatus = null;
 
-  public CULedgerMember memberPrivateDID(String memberPrivateDID) {
+  public CULedgerMemberPrivate memberPrivateDID(String memberPrivateDID) {
     this.memberPrivateDID = memberPrivateDID;
     return this;
   }
@@ -72,7 +79,8 @@ public class CULedgerMember   {
    * Get memberPrivateDID
    * @return memberPrivateDID
   **/
-  @ApiModelProperty(example = "fake-DID-here", value = "")
+  @ApiModelProperty(example = "fake-DID-here", required = true, value = "")
+  @NotNull
 
 
   public String getMemberPrivateDID() {
@@ -83,7 +91,7 @@ public class CULedgerMember   {
     this.memberPrivateDID = memberPrivateDID;
   }
 
-  public CULedgerMember memberId(String memberId) {
+  public CULedgerMemberPrivate memberId(String memberId) {
     this.memberId = memberId;
     return this;
   }
@@ -104,7 +112,48 @@ public class CULedgerMember   {
     this.memberId = memberId;
   }
 
-  public CULedgerMember memberStatus(MemberStatusEnum memberStatus) {
+  public CULedgerMemberPrivate memberDDO(CULedgerDDO memberDDO) {
+    this.memberDDO = memberDDO;
+    return this;
+  }
+
+  /**
+   * Get memberDDO
+   * @return memberDDO
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public CULedgerDDO getMemberDDO() {
+    return memberDDO;
+  }
+
+  public void setMemberDDO(CULedgerDDO memberDDO) {
+    this.memberDDO = memberDDO;
+  }
+
+  public CULedgerMemberPrivate institutionPrivateKey(String institutionPrivateKey) {
+    this.institutionPrivateKey = institutionPrivateKey;
+    return this;
+  }
+
+  /**
+   * Get institutionPrivateKey
+   * @return institutionPrivateKey
+  **/
+  @ApiModelProperty(example = "DDDDSDAFSDFASDF", value = "")
+
+
+  public String getInstitutionPrivateKey() {
+    return institutionPrivateKey;
+  }
+
+  public void setInstitutionPrivateKey(String institutionPrivateKey) {
+    this.institutionPrivateKey = institutionPrivateKey;
+  }
+
+  public CULedgerMemberPrivate memberStatus(MemberStatusEnum memberStatus) {
     this.memberStatus = memberStatus;
     return this;
   }
@@ -113,8 +162,7 @@ public class CULedgerMember   {
    * Get memberStatus
    * @return memberStatus
   **/
-  @ApiModelProperty(example = "onboarded", required = true, value = "")
-  @NotNull
+  @ApiModelProperty(example = "onboarded", value = "")
 
 
   public MemberStatusEnum getMemberStatus() {
@@ -134,24 +182,28 @@ public class CULedgerMember   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CULedgerMember cuLedgerMember = (CULedgerMember) o;
-    return Objects.equals(this.memberPrivateDID, cuLedgerMember.memberPrivateDID) &&
-        Objects.equals(this.memberId, cuLedgerMember.memberId) &&
-        Objects.equals(this.memberStatus, cuLedgerMember.memberStatus);
+    CULedgerMemberPrivate cuLedgerMemberPrivate = (CULedgerMemberPrivate) o;
+    return Objects.equals(this.memberPrivateDID, cuLedgerMemberPrivate.memberPrivateDID) &&
+        Objects.equals(this.memberId, cuLedgerMemberPrivate.memberId) &&
+        Objects.equals(this.memberDDO, cuLedgerMemberPrivate.memberDDO) &&
+        Objects.equals(this.institutionPrivateKey, cuLedgerMemberPrivate.institutionPrivateKey) &&
+        Objects.equals(this.memberStatus, cuLedgerMemberPrivate.memberStatus);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(memberPrivateDID, memberId, memberStatus);
+    return Objects.hash(memberPrivateDID, memberId, memberDDO, institutionPrivateKey, memberStatus);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CULedgerMember {\n");
+    sb.append("class CULedgerMemberPrivate {\n");
     
     sb.append("    memberPrivateDID: ").append(toIndentedString(memberPrivateDID)).append("\n");
     sb.append("    memberId: ").append(toIndentedString(memberId)).append("\n");
+    sb.append("    memberDDO: ").append(toIndentedString(memberDDO)).append("\n");
+    sb.append("    institutionPrivateKey: ").append(toIndentedString(institutionPrivateKey)).append("\n");
     sb.append("    memberStatus: ").append(toIndentedString(memberStatus)).append("\n");
     sb.append("}");
     return sb.toString();

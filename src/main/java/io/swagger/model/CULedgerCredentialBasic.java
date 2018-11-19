@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * CULedgerCredentialBasic
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-14T21:44:13.544Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-19T08:00:41.414Z[GMT]")
 
 public class CULedgerCredentialBasic   {
   @JsonProperty("id")

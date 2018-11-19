@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-14T21:44:13.544Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-19T08:00:41.414Z[GMT]")
 
 @Controller
 public class MemberApiController implements MemberApi {
@@ -54,7 +54,7 @@ public class MemberApiController implements MemberApi {
     }
 
     public ResponseEntity<CULedgerMember> memberAuthenticate(@ApiParam(value = "pass an optional search string for looking up Members",required=true) @PathVariable("memberId") String memberId) {
-    	return Vcx.memberAuthenticate(memberId);
+        return Vcx.memberAuthenticate(memberId);
     }
 
     public ResponseEntity<String> memberConnect(@ApiParam(value = "pass an optional search string for looking up Members",required=true) @PathVariable("memberId") String memberId) {
@@ -63,7 +63,7 @@ public class MemberApiController implements MemberApi {
     }
 
     public ResponseEntity<CULedgerOnboardingData> memberOnboard(@ApiParam(value = "" ,required=true )  @Valid @RequestBody CULedgerOnboardingData body,@ApiParam(value = "Member (identitified by memberID) that we are onboarding.",required=true) @PathVariable("memberId") String memberId) {
-    	return Vcx.memberOnBoard(memberId, body);
+        return Vcx.memberOnBoard(memberId, body);
     }
 
     public ResponseEntity<String> memberSendCredential(@ApiParam(value = "pass an optional search string for looking up Members",required=true) @PathVariable("memberId") String memberId) {

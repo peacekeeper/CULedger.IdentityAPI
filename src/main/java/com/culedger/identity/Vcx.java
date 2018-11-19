@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import com.evernym.sdk.vcx.LibVcx;
 import com.evernym.sdk.vcx.VcxException;
 import com.evernym.sdk.vcx.connection.ConnectionApi;
-import com.evernym.sdk.vcx.credential.CredentialApi;
 import com.evernym.sdk.vcx.credentialDef.CredentialDefApi;
 import com.evernym.sdk.vcx.issuer.IssuerApi;
+import com.evernym.sdk.vcx.proof.GetProofResult;
 import com.evernym.sdk.vcx.proof.ProofApi;
 import com.evernym.sdk.vcx.schema.SchemaApi;
 import com.evernym.sdk.vcx.vcx.VcxApi;
@@ -27,6 +27,19 @@ public class Vcx {
 	private static final JSONParser jsonParser = new JSONParser(JSONParser.MODE_STRICTEST);
 	private static final Logger logger = LoggerFactory.getLogger(Vcx.class);
 	private static final Random random = new Random();
+
+	public static final int VCX_UNDEFINED = 0;
+	public static final int VCX_INITIALIZED = 1;
+	public static final int VCX_OFFERSENT = 2;
+	public static final int VCX_REQUESTRECEIVED = 3;
+	public static final int VCX_ACCEPTED = 4;
+	public static final int VCX_UNFULFILLED = 5;
+	public static final int VCX_EXPIRED = 6;
+	public static final int VCX_REVOKED = 7;
+
+	public static final int PROOFSTATE_UNDEFINED = 0;
+	public static final int PROOFSTATE_VERIFIED = 1;
+	public static final int PROOFSTATE_INVALID = 2;
 
 	private static final String CU_DID = "SsPVi4HpA8jJx7wcTqCEQ4";
 	private static final String CU_NAME = "testcu";
@@ -147,7 +160,7 @@ public class Vcx {
 
 				if (logger.isInfoEnabled()) logger.info("WAIT: For connection handle " + connectionHandle + " got state result " + connectionGetStateResult);
 
-				if (connectionGetStateResult.intValue() != 2) break;
+				if (connectionGetStateResult.intValue() != VCX_OFFERSENT) break;
 
 				Thread.sleep(500);
 
@@ -193,7 +206,7 @@ public class Vcx {
 
 				if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + connectionHandle + " got state result " + credentialWaitGetStateResult);
 
-				if (credentialWaitGetStateResult.intValue() != 2) break;
+				if (credentialWaitGetStateResult.intValue() != VCX_OFFERSENT) break;
 
 				Thread.sleep(500);
 
@@ -205,15 +218,15 @@ public class Vcx {
 			}
 
 
-			
+
 			// send credential
 
 			String issuerSendCredentialResult = IssuerApi.issuerSendCredential(credentialHandle, connectionHandle).get();
 
 			if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " and connection handle " + connectionHandle + " got issuer send credential result " + issuerSendCredentialResult);
 
-			
-			
+
+
 
 			// update state
 
@@ -230,7 +243,7 @@ public class Vcx {
 
 				Integer credentialWaitGetStateResult = IssuerApi.issuerCredntialGetState(credentialHandle).get();
 
-				if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + connectionHandle + " got state result " + credentialWaitGetStateResult);
+				if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + credentialHandle + " got state result " + credentialWaitGetStateResult);
 
 				if (credentialWaitGetStateResult.intValue() != 3) break;
 
@@ -283,6 +296,52 @@ public class Vcx {
 			Integer proofSendRequestResult = ProofApi.proofSendRequest(proofHandle, connectionHandle).get();
 
 			if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " and connection handle " + connectionHandle + " got proof send request result " + proofSendRequestResult);
+
+
+
+
+
+
+			// update state
+
+			Integer proofUpdateStateResult = ProofApi.proofUpdateState(proofHandle).get();
+
+			if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " got proof update state result " + proofUpdateStateResult);
+
+
+
+
+			// wait
+
+			while (true) {
+
+				Integer proofWaitGetStateResult = ProofApi.proofGetState(proofHandle).get();
+
+				if (logger.isInfoEnabled()) logger.info("WAIT: For proof handle " + connectionHandle + " got state result " + proofWaitGetStateResult);
+
+				if (proofWaitGetStateResult.intValue() != VCX_OFFERSENT) break;
+
+				Thread.sleep(500);
+
+				Integer proofWaitUpdateStateResult = ProofApi.proofUpdateState(proofHandle).get();
+
+				if (logger.isInfoEnabled()) logger.info("WAIT: For proof handle " + proofHandle + " got proof update state result " + proofWaitUpdateStateResult);
+
+				Thread.sleep(500);
+			}
+
+
+
+			// get proof
+
+			GetProofResult getProofResult = ProofApi.getProof(proofHandle, connectionHandle).get();
+
+			if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " and connection handle " + connectionHandle + " got proof result " + getProofResult + " with response data " + getProofResult.getResponse_data() + " and proof state " + getProofResult.getProof_state());
+
+			if (getProofResult.getProof_state() != PROOFSTATE_VERIFIED) {
+
+				return new ResponseEntity<CULedgerMember>(HttpStatus.UNAUTHORIZED);
+			}
 
 			// done
 
