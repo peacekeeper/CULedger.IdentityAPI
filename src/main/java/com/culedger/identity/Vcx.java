@@ -150,8 +150,6 @@ public class Vcx {
 
 			if (logger.isInfoEnabled()) logger.info("Added member ID " + memberId + " with connection handle " + connectionHandle);
 
-
-
 			// wait
 
 			while (true) {
@@ -170,10 +168,6 @@ public class Vcx {
 
 				Thread.sleep(500);
 			}
-
-
-
-
 
 			// create credential
 
@@ -195,9 +189,6 @@ public class Vcx {
 
 			if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " got credential update state result " + credentialUpdateStateResult);
 
-
-
-
 			// wait
 
 			while (true) {
@@ -217,25 +208,17 @@ public class Vcx {
 				Thread.sleep(500);
 			}
 
-
-
 			// send credential
 
 			Integer issuerSendCredentialResult = IssuerApi.issuerSendCredential(credentialHandle, connectionHandle).get();
 
 			if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " and connection handle " + connectionHandle + " got issuer send credential result " + issuerSendCredentialResult);
 
-
-
-
 			// update state
 
 			Integer credentialUpdateStateResult2 = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();
 
 			if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " got credential update state result " + credentialUpdateStateResult2);
-
-
-
 
 			// wait
 
@@ -255,8 +238,6 @@ public class Vcx {
 
 				Thread.sleep(500);
 			}
-
-
 
 			// done
 
@@ -297,19 +278,11 @@ public class Vcx {
 
 			if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " and connection handle " + connectionHandle + " got proof send request result " + proofSendRequestResult);
 
-
-
-
-
-
 			// update state
 
 			Integer proofUpdateStateResult = ProofApi.proofUpdateState(proofHandle).get();
 
 			if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " got proof update state result " + proofUpdateStateResult);
-
-
-
 
 			// wait
 
@@ -329,8 +302,6 @@ public class Vcx {
 
 				Thread.sleep(500);
 			}
-
-
 
 			// get proof
 
