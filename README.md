@@ -1,6 +1,6 @@
 # CULedger.IdentityAPI
 
-This is a work-in-progress (not yet functional!) implementation of the CULedger Identity API, which connects to Evernym/Sovrin.
+This is a work-in-progress implementation of the CULedger Identity API, which connects to Evernym/Sovrin.
 
 Definition:
 
@@ -26,7 +26,9 @@ Open `http://localhost:8080/darrellodonnell/CULedger.Identity/0.1.0/swagger-ui.h
 
 ### How to onboard a member:
 
-**POST** call to `/member/{memberId}/onboard`:
+If the member ID is *ms7823* and their phone number is *+436643154848*:
+
+**POST** call to `/member/ms7823/onboard`:
 
 	{
 	    "memberId": "ms7823",
@@ -46,7 +48,9 @@ Response (after long wait time): HTTP 200 = Connection established and myCUID cr
 
 ### How to authenticate a member:
 
-**PUT** call to `/member/{memberId}/authenticate`
+If the member ID is *ms7823*:
+
+**PUT** call to `/member/ms7823/authenticate`
 
 Response (after long wait time): HTTP 200 = Valid myCUID proof Received, HTTP 401 = Invalid proof Received, HTTP 500 = Error
 
