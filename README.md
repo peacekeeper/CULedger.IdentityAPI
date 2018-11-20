@@ -42,13 +42,13 @@ Open `http://localhost:8080/darrellodonnell/CULedger.Identity/0.1.0/swagger-ui.h
 	    }
 	}
 
-Response: HTTP 200 = Connection established and myCUID credential issued, HTTP 500 = Error
+Response (after long wait time): HTTP 200 = Connection established and myCUID credential issued, HTTP 500 = Error
 
 ### How to authenticate a member:
 
 **PUT** call to `/member/{memberId}/authenticate`
 
-Response: HTTP 200 = Valid Proof Received, HTTP 401 = Invalid Proof Received, HTTP 500 = Error
+Response (after long wait time): HTTP 200 = Valid myCUID proof Received, HTTP 401 = Invalid proof Received, HTTP 500 = Error
 
 ## How to test using API Client
 
