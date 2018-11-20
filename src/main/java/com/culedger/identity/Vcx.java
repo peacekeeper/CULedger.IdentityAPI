@@ -72,8 +72,8 @@ public class Vcx {
 			// create schema
 
 			String sourceId = CU_DID;
-			String schemaName = "mycuid";
-			String version = "0.0." + random.nextInt(1000000);
+			String schemaName = "mycuid-" +  + random.nextInt(1000000);
+			String version = "0.0.1";
 			String schemaData = "[\"cu\"]";
 			Integer schemaHandle = SchemaApi.schemaCreate(sourceId, schemaName, version, schemaData, 0).get();
 			schemaId = SchemaApi.schemaGetSchemaId(schemaHandle).get();
@@ -85,7 +85,7 @@ public class Vcx {
 			// create credential definition
 
 			String issuerId = sourceId;
-			String credentialName = "culedger";
+			String credentialName = "culedger-" + random.nextInt(1000000);
 			String tag = "test." + random.nextInt(1000000);
 			String config = "{\"support_revocation\":false}";
 			Integer credentialDefHandle = CredentialDefApi.credentialDefCreate(sourceId, credentialName, schemaId, issuerId, tag, config, 0).get();
@@ -179,7 +179,7 @@ public class Vcx {
 
 			String credentialData = credentialData(CU_NAME);
 			String credentialName = "mycuidcredential";
-			Integer credentialHandle = IssuerApi.issuerCreateCredential(sourceId, credentialDefId, CU_DID, credentialData, credentialName, 0).get();
+			Integer credentialHandle = IssuerApi.issuerCreateCredential(sourceId, credentialDefId, null, credentialData, credentialName, 0).get();
 
 			if (logger.isInfoEnabled()) logger.info("For source ID " + sourceId + " and credential def ID " + credentialDefId + " and credential data " + credentialData + " got credential handle " + credentialHandle);
 
@@ -221,7 +221,7 @@ public class Vcx {
 
 			// send credential
 
-			String issuerSendCredentialResult = IssuerApi.issuerSendCredential(credentialHandle, connectionHandle).get();
+			Integer issuerSendCredentialResult = IssuerApi.issuerSendCredential(credentialHandle, connectionHandle).get();
 
 			if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " and connection handle " + connectionHandle + " got issuer send credential result " + issuerSendCredentialResult);
 
@@ -358,7 +358,7 @@ public class Vcx {
 	private static String credentialData(String cuName) {
 
 		String credentialData =
-				"{'cu':'" + cuName + "'}";
+				"{'cu':['" + cuName + "']}";
 
 		return credentialData.replace("'", "\"");
 	}

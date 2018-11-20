@@ -2,4 +2,4 @@
 
 export RUST_LOG=debug
 cd /opt/api/
-mvn spring-boot:run >out 2>&1
+RUST_LOG=debug mvn spring-boot:run

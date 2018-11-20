@@ -89,7 +89,7 @@
 		<dependency>
 			<groupId>com.evernym</groupId>
 			<artifactId>vcx</artifactId>
-			<version>1.0.0-16-11-2018T23-31-1.0.0</version>
+			<version>1.0.0-20-11-2018T05-07-1.0.0</version>
 			<scope>compile</scope>
 		</dependency>
          <dependency>
