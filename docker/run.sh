@@ -1,5 +1,5 @@
-#!/bin/bash
+#!/bin/sh
 
-export RUST_LOG=debug
+export RUST_LOG=info
 cd /opt/api/
-RUST_LOG=debug mvn spring-boot:run
+RUST_LOG=info mvn spring-boot:run
