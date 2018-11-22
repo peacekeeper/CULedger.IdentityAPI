@@ -23,7 +23,7 @@ RUN mvn dependency:get -DgroupId=org.springframework.boot -DartifactId=spring-bo
 
 # install libindy
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 68DB5E88
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 68DB5E88
 RUN add-apt-repository "deb https://repo.sovrin.org/sdk/deb xenial stable"
 RUN apt-get update
 RUN apt-get install -y libindy=1.6.6
