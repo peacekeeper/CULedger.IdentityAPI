@@ -52,7 +52,7 @@ If the member ID is *ms7823*:
 
 **PUT** call to `/member/ms7823/authenticate`
 
-Response (after long wait time): HTTP 200 = Valid myCUID proof Received, HTTP 401 = Invalid proof Received, HTTP 500 = Error
+Response (after long wait time): HTTP 200 = Valid myCUID proof Received, HTTP 401 = Invalid proof Received, HTTP 404 = Member ID unknown (not onboarded), HTTP 500 = Error
 
 ## How to test using API Client
 
