@@ -3,7 +3,7 @@ MAINTAINER Markus Sabadello <markus@danubetech.com>
 
 ARG VCX_INSTITUTION_LOGO_URL="https://culedger.s3.amazonaws.com/Connect.Me/CULedger-ConnectMe-Logo-256x256.png"
 ARG VCX_INSTITUTION_NAME="testcu"
-ARG VCX_CREDENTIAL_NAME="myCUID Credential"
+ARG VCX_CREDENTIAL_NAME="myCUID"
 
 USER root
 

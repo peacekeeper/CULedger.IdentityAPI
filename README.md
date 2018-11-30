@@ -30,7 +30,7 @@ The above command can optionally be modified to pass parameters into the build p
 
 **Credential name:**
 
-	--build-arg VCX_CREDENTIAL_NAME="myCUID Credential"
+	--build-arg VCX_CREDENTIAL_NAME="myCUID"
 
 ## How to run
 
