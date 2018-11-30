@@ -16,6 +16,22 @@ Documentation:
 
 	docker build -f ./docker/Dockerfile . -t culedger-identityapi
 
+## How to configure (optional)
+
+The above command can optionally be modified to pass parameters into the build process:
+
+**URL to the institution's logo:**
+
+	--build-arg VCX_INSTITUTION_LOGO_URL="https://culedger.s3.amazonaws.com/Connect.Me/CULedger-ConnectMe-Logo-256x256.png"
+
+**Institution name:**
+
+	--build-arg VCX_INSTITUTION_LOGO_URL="testcu"
+
+**Credential name:**
+
+	--build-arg VCX_CREDENTIAL_NAME="myCUID Credential"
+
 ## How to run
 
 	docker run -ti -p 8080:8080 culedger-identityapi:latest

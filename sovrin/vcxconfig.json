@@ -4,7 +4,7 @@
   "agency_verkey": "FvA7e4DuD2f9kYHq6B3n7hE7NQvmpgeFRrox3ELKv9vX",
   "genesis_path": "./pool_transactions_sandbox_genesis",
   "institution_did": "SsPVi4HpA8jJx7wcTqCEQ4",
-  "institution_logo_url": "http://culedger.com/Portals/CUBlockchain/CU-Ledger-Logo-for-web-250px-Red.png",
+  "institution_logo_url": "--vcx_institution_logo_url--",
   "institution_name": "CULedger",
   "institution_verkey": "F6mDd1Govefw7XEa5mRJPRLsEKkgUbSsieEhtdSWVZac",
   "remote_to_sdk_did": "HSMsAQMri5ukn6gCCdeu3h",

@@ -1,6 +1,10 @@
 FROM ubuntu:18.04
 MAINTAINER Markus Sabadello <markus@danubetech.com>
 
+ARG VCX_INSTITUTION_LOGO_URL="https://culedger.s3.amazonaws.com/Connect.Me/CULedger-ConnectMe-Logo-256x256.png"
+ARG VCX_INSTITUTION_NAME="testcu"
+ARG VCX_CREDENTIAL_NAME="myCUID Credential"
+
 USER root
 
 RUN apt-get -y update
@@ -58,6 +62,12 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # variables
 
 ENV variable_key=variable_value
+
+# configure
+
+RUN cd /opt/sovrin && sed -i "s,--vcx_institution_logo_url--,${VCX_INSTITUTION_LOGO_URL},g" ./vcxconfig.json
+ENV VCX_INSTITUTION_NAME ${VCX_INSTITUTION_NAME}
+ENV VCX_CREDENTIAL_NAME ${VCX_CREDENTIAL_NAME}
 
 # done
 

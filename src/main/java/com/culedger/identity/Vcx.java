@@ -42,7 +42,6 @@ public class Vcx {
 	public static final int PROOFSTATE_INVALID = 2;
 
 	private static final String CU_DID = "SsPVi4HpA8jJx7wcTqCEQ4";
-	private static final String CU_NAME = "testcu";
 
 	private static String schemaId;
 	private static String credentialDefId;
@@ -171,8 +170,8 @@ public class Vcx {
 
 			// create credential
 
-			String credentialData = credentialData(CU_NAME);
-			String credentialName = "mycuidcredential";
+			String credentialData = credentialData(VcxConfiguration.VCX_INSTITUTION_NAME);
+			String credentialName = VcxConfiguration.VCX_CREDENTIAL_NAME;
 			Integer credentialHandle = IssuerApi.issuerCreateCredential(sourceId, credentialDefId, null, credentialData, credentialName, 0).get();
 
 			if (logger.isInfoEnabled()) logger.info("For source ID " + sourceId + " and credential def ID " + credentialDefId + " and credential data " + credentialData + " got credential handle " + credentialHandle);
