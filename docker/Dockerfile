@@ -30,7 +30,7 @@ RUN mvn dependency:get -DgroupId=org.springframework.boot -DartifactId=spring-bo
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 68DB5E88
 RUN add-apt-repository "deb https://repo.sovrin.org/sdk/deb xenial stable"
 RUN apt-get update
-RUN apt-get install -y libindy=1.6.6
+RUN apt-get install -y libindy=1.6.8
 
 # copy sovrin files
 
@@ -39,8 +39,8 @@ RUN tar -xzf /opt/sovrin/indy_client.tgz -C /root
 
 # install sovtoken and vcx
 
-RUN dpkg -i /opt/sovrin/libsovtoken_0.9.35.4_amd64.deb
-RUN dpkg -i /opt/sovrin/libvcx_0.1.22084524-98d291b_amd64.deb
+RUN dpkg -i /opt/sovrin/libsovtoken_0.9.6_amd64.deb
+RUN dpkg -i /opt/sovrin/libvcx_0.1.27328536-fb7b7b6_amd64.deb
 RUN apt-get install -f
 
 # install vcx wrapper
