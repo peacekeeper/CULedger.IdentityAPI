@@ -45,7 +45,7 @@ RUN apt-get install -f
 
 # install vcx wrapper
 
-RUN mvn install:install-file -Dfile=/opt/sovrin/com.evernym-vcx_1.0.0-20-11-2018T05-07-1.0.0.jar -DpomFile=/opt/sovrin/com.evernym-vcx_1.0.0-20-11-2018T05-07-1.0.0.xml
+RUN mvn install:install-file -Dfile=/opt/sovrin/com.evernym-vcx_1.0.0-02-12-2018T11-22-1.0.0.jar -DpomFile=/opt/sovrin/com.evernym-vcx_1.0.0-02-12-2018T11-22-1.0.0.xml
 
 # copy api files
 

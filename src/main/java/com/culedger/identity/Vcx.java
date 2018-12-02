@@ -172,7 +172,7 @@ public class Vcx {
 
 			String credentialData = credentialData(VcxConfiguration.VCX_INSTITUTION_NAME);
 			String credentialName = VcxConfiguration.VCX_CREDENTIAL_NAME;
-			Integer credentialHandle = IssuerApi.issuerCreateCredential(sourceId, credentialDefId, null, credentialData, credentialName, 0).get();
+			Integer credentialHandle = IssuerApi.issuerCreateCredential(sourceId, credentialDefId, null, credentialData, credentialName, "0").get();
 
 			if (logger.isInfoEnabled()) logger.info("For source ID " + sourceId + " and credential def ID " + credentialDefId + " and credential data " + credentialData + " got credential handle " + credentialHandle);
 
