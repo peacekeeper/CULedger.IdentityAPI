@@ -26,11 +26,16 @@ The above command can optionally be modified to pass parameters into the build p
 
 **Institution name:**
 
-	--build-arg VCX_INSTITUTION_LOGO_URL="testcu"
+	--build-arg VCX_INSTITUTION_NAME="CULedger"
 
 **Credential name:**
 
-	--build-arg VCX_CREDENTIAL_NAME="myCUID"
+	--build-arg VCX_CREDENTIAL_NAME="MyCUID"
+
+**CULedger Demo Build**
+
+	docker build -f ./docker/Dockerfile . -t culedger-identityapi -build-arg VCX_INSTITUTION_LOGO_URL="https://culedger.s3.amazonaws.com/Connect.Me/CULedger-ConnectMe-Logo-256x256.png" --build-arg VCX_INSTITUTION_NAME="CULedger" --build-arg VCX_CREDENTIAL_NAME="MyCUID" 
+
 
 ## How to run
 
@@ -50,7 +55,7 @@ If the member ID is *ms7823* and their phone number is *+436643154848*:
 	    "memberId": "ms7823",
 	    "memberPhoneNumber": "+436643154848",
 	    "memberEmail": "test@gmail.com",
-	    "displayTextFromFI": "Welcome to MyCUID!",
+	    "displayTextFromFI": "Let's get connected via MyCUID!",
 	    "credentialData": {
 	        "id": null,
 	        "memberId": "ms7823",
