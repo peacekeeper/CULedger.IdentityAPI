@@ -98,5 +98,10 @@
                <version>1.7.25</version>
                <scope>compile</scope>
        </dependency>
+		<dependency>
+		  <groupId>org.rocksdb</groupId>
+		  <artifactId>rocksdbjni</artifactId>
+		  <version>5.5.1</version>
+		</dependency>
     </dependencies>
 </project>

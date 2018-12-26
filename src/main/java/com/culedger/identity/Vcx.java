@@ -1,14 +1,15 @@
 package com.culedger.identity;
 import java.util.Random;
-import java.util.concurrent.ExecutionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.culedger.identity.didmapper.DbMemberDidMapper;
+import com.culedger.identity.didmapper.MemberDidMapper;
+import com.culedger.identity.didmapper.MemoryMemberDidMapper;
 import com.evernym.sdk.vcx.LibVcx;
-import com.evernym.sdk.vcx.VcxException;
 import com.evernym.sdk.vcx.connection.ConnectionApi;
 import com.evernym.sdk.vcx.credentialDef.CredentialDefApi;
 import com.evernym.sdk.vcx.issuer.IssuerApi;
@@ -43,6 +44,8 @@ public class Vcx {
 
 	private static final String CU_DID = "SsPVi4HpA8jJx7wcTqCEQ4";
 
+	private static MemberDidMapper memberDidMapper;
+
 	private static String schemaId;
 	private static String credentialDefId;
 	private static Integer schemaSeqNo;
@@ -68,6 +71,19 @@ public class Vcx {
 
 			if (logger.isInfoEnabled()) logger.info("VCX initialized.");
 
+			// create member->DID mapper
+
+			if (VcxConfiguration.VCX_DID_MAPPER.equals("memory")) {
+
+				memberDidMapper = new MemoryMemberDidMapper();
+			} else if (VcxConfiguration.VCX_DID_MAPPER.equals("db")) {
+
+				memberDidMapper = new DbMemberDidMapper();
+			} else {
+
+				throw new Exception("Unknown DID->mapper type.");
+			}
+
 			// create schema
 
 			String sourceId = CU_DID;
@@ -92,7 +108,7 @@ public class Vcx {
 			String credentialDef = CredentialDefApi.credentialDefSerialize(credentialDefHandle).get();
 
 			if (logger.isInfoEnabled()) logger.info("For issuer ID " + issuerId + " got credential def handle " + credentialDefHandle + " and credential def ID " + credentialDefId + " and credential def " + credentialDef);
-		} catch (InterruptedException | ExecutionException | VcxException ex) {
+		} catch (Exception ex) {
 
 			if (logger.isErrorEnabled()) logger.error(ex.getMessage(), ex);
 			schemaId = null;
@@ -145,7 +161,7 @@ public class Vcx {
 
 			// write to member DID mapper
 
-			MemberDidMapper.add(memberId, connectionHandle);
+			memberDidMapper.add(memberId, connectionHandle);
 
 			if (logger.isInfoEnabled()) logger.info("Added member ID " + memberId + " with connection handle " + connectionHandle);
 
@@ -255,7 +271,7 @@ public class Vcx {
 
 			// read from member DID mapper
 
-			Integer connectionHandle = MemberDidMapper.getAsConnectionHandle(memberId);
+			Integer connectionHandle = memberDidMapper.getAsConnectionHandle(memberId);
 
 			if (logger.isInfoEnabled()) logger.info("For member ID " + memberId + " got connection handle " + connectionHandle);
 
