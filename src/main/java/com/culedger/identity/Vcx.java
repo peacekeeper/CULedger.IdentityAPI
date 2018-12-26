@@ -42,8 +42,6 @@ public class Vcx {
 	public static final int PROOFSTATE_VERIFIED = 1;
 	public static final int PROOFSTATE_INVALID = 2;
 
-	private static final String CU_DID = "SsPVi4HpA8jJx7wcTqCEQ4";
-
 	private static MemberDidMapper memberDidMapper;
 
 	private static String schemaId;
@@ -86,7 +84,7 @@ public class Vcx {
 
 			// create schema
 
-			String sourceId = CU_DID;
+			String sourceId = VcxConfiguration.VCX_INSTITUTION_DID;
 			String schemaName = "mycuid-" +  + random.nextInt(1000000);
 			String version = "0.0.1";
 			String schemaData = "[\"cu\"]";

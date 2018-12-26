@@ -28,6 +28,10 @@ The above command can optionally be modified to pass parameters into the build p
 
 	--build-arg VCX_INSTITUTION_NAME="CULedger"
 
+**Institution DID:**
+
+	--build-arg VCX_INSTITUTION_DID="SsPVi4HpA8jJx7wcTqCEQ4"
+
 **Credential name:**
 
 	--build-arg VCX_CREDENTIAL_NAME="MyCUID"

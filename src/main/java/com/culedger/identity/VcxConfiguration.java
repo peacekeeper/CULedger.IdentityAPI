@@ -8,6 +8,7 @@ public class VcxConfiguration {
 	private static final Logger logger = LoggerFactory.getLogger(Vcx.class);
 
 	public static final String VCX_INSTITUTION_NAME;
+	public static final String VCX_INSTITUTION_DID;
 	public static final String VCX_CREDENTIAL_NAME;
 	public static final String VCX_DID_MAPPER;
 
@@ -16,6 +17,10 @@ public class VcxConfiguration {
 		VCX_INSTITUTION_NAME = System.getenv("VCX_INSTITUTION_NAME");
 		if (VCX_INSTITUTION_NAME == null) throw new RuntimeException("Variable VCX_INSTITUTION_NAME not set.");
 		if (logger.isInfoEnabled()) logger.info("VCX_INSTITUTION_NAME: " + VCX_INSTITUTION_NAME);
+
+		VCX_INSTITUTION_DID = System.getenv("VCX_INSTITUTION_DID");
+		if (VCX_INSTITUTION_DID == null) throw new RuntimeException("Variable VCX_INSTITUTION_DID not set.");
+		if (logger.isInfoEnabled()) logger.info("VCX_INSTITUTION_DID: " + VCX_INSTITUTION_DID);
 
 		VCX_CREDENTIAL_NAME = System.getenv("VCX_CREDENTIAL_NAME");
 		if (VCX_CREDENTIAL_NAME == null) throw new RuntimeException("Variable VCX_CREDENTIAL_NAME not set.");
