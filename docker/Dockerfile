@@ -6,6 +6,8 @@ ARG VCX_INSTITUTION_NAME="testcu"
 ARG VCX_INSTITUTION_DID="SsPVi4HpA8jJx7wcTqCEQ4"
 ARG VCX_CREDENTIAL_NAME="myCUID"
 ARG VCX_DID_MAPPER="memory"
+ARG VCX_SCHEMA_ID
+ARG VCX_CREDDEF_ID
 
 USER root
 
@@ -45,6 +47,10 @@ RUN dpkg -i /opt/sovrin/libsovtoken_0.9.6_amd64.deb
 RUN dpkg -i /opt/sovrin/libvcx_0.1.27328536-fb7b7b6_amd64.deb
 RUN apt-get install -f
 
+# install indy wrapper
+
+RUN mvn install:install-file -Dfile=/opt/sovrin/indy-1.6.8.jar -DpomFile=/opt/sovrin/indy-1.6.8.xml
+
 # install vcx wrapper
 
 RUN mvn install:install-file -Dfile=/opt/sovrin/com.evernym-vcx_1.0.0-07-12-2018T08-51-1.0.0.jar -DpomFile=/opt/sovrin/com.evernym-vcx_1.0.0-07-12-2018T08-51-1.0.0.xml
@@ -72,6 +78,8 @@ ENV VCX_INSTITUTION_NAME ${VCX_INSTITUTION_NAME}
 ENV VCX_INSTITUTION_DID ${VCX_INSTITUTION_DID}
 ENV VCX_CREDENTIAL_NAME ${VCX_CREDENTIAL_NAME}
 ENV VCX_DID_MAPPER ${VCX_DID_MAPPER}
+ENV VCX_SCHEMA_ID ${VCX_SCHEMA_ID}
+ENV VCX_CREDDEF_ID ${VCX_CREDDEF_ID}
 
 # done
 
