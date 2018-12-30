@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-19T08:00:41.414Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-30T11:45:41.226Z[GMT]")
 
 @Controller
 public class MemberApiController implements MemberApi {
@@ -62,16 +62,15 @@ public class MemberApiController implements MemberApi {
         return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<CULedgerOnboardingData> memberOnboard(@ApiParam(value = "" ,required=true )  @Valid @RequestBody CULedgerOnboardingData body,@ApiParam(value = "Member (identitified by memberID) that we are onboarding.",required=true) @PathVariable("memberId") String memberId) {
-        return Vcx.memberOnBoard(memberId, body);
+    public ResponseEntity<CULedgerOnboardingData> memberOnboard(@ApiParam(value = "" ,required=true )  @Valid @RequestBody CULedgerOnboardingData body, @ApiParam(value = "Member (identitified by memberID) that we are onboarding.",required=true) @PathVariable("memberId") String memberId) {
+        return Vcx.memberOnBoard(body, memberId);
     }
 
     public ResponseEntity<String> memberSendCredential(@ApiParam(value = "pass an optional search string for looking up Members",required=true) @PathVariable("memberId") String memberId) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+        return Vcx.memberSendCredential(memberId);
     }
 
-    public ResponseEntity<CULedgerMessageResponse> memberSendMessage(@ApiParam(value = "" ,required=true )  @Valid @RequestBody CULedgerMessage body,@ApiParam(value = "Member (identitified by memberID) that we are onboarding.",required=true) @PathVariable("memberId") String memberId) {
+    public ResponseEntity<CULedgerMessageResponse> memberSendMessage(@ApiParam(value = "" ,required=true )  @Valid @RequestBody CULedgerMessage body, @ApiParam(value = "Member (identitified by memberID) that we are onboarding.",required=true) @PathVariable("memberId") String memberId) {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<CULedgerMessageResponse>(HttpStatus.NOT_IMPLEMENTED);
     }

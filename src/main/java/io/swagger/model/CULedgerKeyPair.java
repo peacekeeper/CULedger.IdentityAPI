@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * CULedgerKeyPair
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-19T08:00:41.414Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-30T11:45:41.226Z[GMT]")
 
 public class CULedgerKeyPair   {
   @JsonProperty("valueName")
