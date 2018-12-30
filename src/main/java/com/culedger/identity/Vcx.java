@@ -255,13 +255,11 @@ public class Vcx {
 			// update connection
 
 			Integer connectionUpdateStateResult = ConnectionApi.vcxConnectionUpdateState(connectionHandle).get();
-
 			if (logger.isInfoEnabled()) logger.info("For connection handle " + connectionHandle + " got update state result " + connectionUpdateStateResult);
 
 			// invite details
 
 			String connectionInviteDetails = ConnectionApi.connectionInviteDetails(connectionHandle, 0).get();
-
 			if (logger.isInfoEnabled()) logger.info("For connection handle " + connectionHandle + " got invite details " + connectionInviteDetails);
 
 			JSONObject jsonConnectionInviteDetails = (JSONObject) jsonParser.parse(connectionInviteDetails);
@@ -274,26 +272,25 @@ public class Vcx {
 			// write to member DID mapper
 
 			memberDidMapper.add(memberId, connectionHandle);
-
 			if (logger.isInfoEnabled()) logger.info("Added member ID " + memberId + " with connection handle " + connectionHandle);
 
 			// wait
 
+			long waitConnectionInvite = System.currentTimeMillis();
 			while (true) {
 
 				Integer connectionGetStateResult = ConnectionApi.connectionGetState(connectionHandle).get();
-
 				if (logger.isInfoEnabled()) logger.info("WAIT: For connection handle " + connectionHandle + " got state result " + connectionGetStateResult);
 
 				if (connectionGetStateResult.intValue() != VCX_OFFERSENT) break;
 
-				Thread.sleep(500);
+				Thread.sleep(1000);
+				long timeout = VcxConfiguration.VCX_TIMEOUT_CONNECTIONINVITE - (System.currentTimeMillis() - waitConnectionInvite) / 1000;
 
 				Integer connectionWaitUpdateStateResult = ConnectionApi.vcxConnectionUpdateState(connectionHandle).get();
+				if (logger.isInfoEnabled()) logger.info("WAIT: For connection handle " + connectionHandle + " got update state result " + connectionWaitUpdateStateResult + " (TIMEOUT: " + timeout + ")");
 
-				if (logger.isInfoEnabled()) logger.info("WAIT: For connection handle " + connectionHandle + " got update state result " + connectionWaitUpdateStateResult);
-
-				Thread.sleep(500);
+				if (timeout <= 0) throw new InterruptedException("Timeout while waiting for connection.");
 			}
 
 			// create credential
@@ -307,63 +304,59 @@ public class Vcx {
 			// send credential offer
 
 			Integer issuerSendCredentialOfferResult = IssuerApi.issuerSendcredentialOffer(credentialHandle, connectionHandle).get();
-
 			if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " and connection handle " + connectionHandle + " got issuer send credential offer result " + issuerSendCredentialOfferResult);
 
 			// update state
 
 			Integer credentialUpdateStateResult = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();
-
 			if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " got credential update state result " + credentialUpdateStateResult);
 
 			// wait
 
+			long waitCredentialOffer = System.currentTimeMillis();
 			while (true) {
 
 				Integer credentialWaitGetStateResult = IssuerApi.issuerCredntialGetState(credentialHandle).get();
-
 				if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + connectionHandle + " got state result " + credentialWaitGetStateResult);
 
 				if (credentialWaitGetStateResult.intValue() != VCX_OFFERSENT) break;
 
-				Thread.sleep(500);
+				Thread.sleep(1000);
+				long timeout = VcxConfiguration.VCX_TIMEOUT_CREDENTIALOFFER - (System.currentTimeMillis() - waitCredentialOffer) / 1000;
 
 				Integer credentialWaitUpdateStateResult = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();
+				if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + credentialHandle + " got credential update state result " + credentialWaitUpdateStateResult + " (TIMEOUT: " + timeout + ")");
 
-				if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + credentialHandle + " got credential update state result " + credentialWaitUpdateStateResult);
-
-				Thread.sleep(500);
+				if (timeout <= 0) throw new InterruptedException("Timeout while waiting for credential offer.");
 			}
 
 			// send credential
 
 			Integer issuerSendCredentialResult = IssuerApi.issuerSendCredential(credentialHandle, connectionHandle).get();
-
 			if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " and connection handle " + connectionHandle + " got issuer send credential result " + issuerSendCredentialResult);
 
 			// update state
 
 			Integer credentialUpdateStateResult2 = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();
-
 			if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " got credential update state result " + credentialUpdateStateResult2);
 
 			// wait
 
+			long waitCredentialSend = System.currentTimeMillis();
 			while (true) {
 
 				Integer credentialWaitGetStateResult = IssuerApi.issuerCredntialGetState(credentialHandle).get();
-
 				if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + credentialHandle + " got state result " + credentialWaitGetStateResult);
 
-				if (credentialWaitGetStateResult.intValue() != 3) break;
+				if (credentialWaitGetStateResult.intValue() != VCX_REQUESTRECEIVED) break;
 
-				Thread.sleep(500);
+				Thread.sleep(1000);
+				long timeout = VcxConfiguration.VCX_TIMEOUT_CREDENTIALSEND - (System.currentTimeMillis() - waitCredentialSend) / 1000;
 
 				Integer credentialWaitUpdateStateResult = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();
+				if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + credentialHandle + " got credential update state result " + credentialWaitUpdateStateResult + " (TIMEOUT: " + timeout + ")");
 
-				if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + credentialHandle + " got credential update state result " + credentialWaitUpdateStateResult);
-
-				Thread.sleep(500);
+				if (timeout <= 0) throw new InterruptedException("Timeout while waiting for credential send.");
 			}
 
 			// done
@@ -384,7 +377,6 @@ public class Vcx {
 			// read from member DID mapper
 
 			Integer connectionHandle = memberDidMapper.getAsConnectionHandle(memberId);
-
 			if (logger.isInfoEnabled()) logger.info("For member ID " + memberId + " got connection handle " + connectionHandle);
 
 			if (connectionHandle == null) return new ResponseEntity<CULedgerMember>(HttpStatus.NOT_FOUND);
@@ -402,38 +394,35 @@ public class Vcx {
 			// send proof request
 
 			Integer proofSendRequestResult = ProofApi.proofSendRequest(proofHandle, connectionHandle).get();
-
 			if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " and connection handle " + connectionHandle + " got proof send request result " + proofSendRequestResult);
 
 			// update state
 
 			Integer proofUpdateStateResult = ProofApi.proofUpdateState(proofHandle).get();
-
 			if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " got proof update state result " + proofUpdateStateResult);
 
 			// wait
 
+			long waitProofRequest = System.currentTimeMillis();
 			while (true) {
 
 				Integer proofWaitGetStateResult = ProofApi.proofGetState(proofHandle).get();
-
 				if (logger.isInfoEnabled()) logger.info("WAIT: For proof handle " + connectionHandle + " got state result " + proofWaitGetStateResult);
 
 				if (proofWaitGetStateResult.intValue() != VCX_OFFERSENT) break;
 
-				Thread.sleep(500);
+				Thread.sleep(1000);
+				long timeout = VcxConfiguration.VCX_TIMEOUT_PROOFREQUEST - (System.currentTimeMillis() - waitProofRequest) / 1000;
 
 				Integer proofWaitUpdateStateResult = ProofApi.proofUpdateState(proofHandle).get();
+				if (logger.isInfoEnabled()) logger.info("WAIT: For proof handle " + proofHandle + " got proof update state result " + proofWaitUpdateStateResult + " (TIMEOUT: " + timeout + ")");
 
-				if (logger.isInfoEnabled()) logger.info("WAIT: For proof handle " + proofHandle + " got proof update state result " + proofWaitUpdateStateResult);
-
-				Thread.sleep(500);
+				if (timeout <= 0) throw new InterruptedException("Timeout while waiting for proof.");
 			}
 
 			// get proof
 
 			GetProofResult getProofResult = ProofApi.getProof(proofHandle, connectionHandle).get();
-
 			if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " and connection handle " + connectionHandle + " got proof result " + getProofResult + " with response data " + getProofResult.getResponse_data() + " and proof state " + getProofResult.getProof_state());
 
 			if (getProofResult.getProof_state() != PROOFSTATE_VERIFIED) {
@@ -489,7 +478,7 @@ public class Vcx {
 
 		return "tag-" + random.nextInt(1000000);
 	}
-/*
+	/*
 	private static String schemaIdFromSchemaData(String schemaData) {
 
 		return VcxConfiguration.VCX_INSTITUTION_DID + ":" + "2" + ":" + schemaNameFromSchemaData(schemaData) + ":" + schemaVersionFromSchemaData(schemaData);

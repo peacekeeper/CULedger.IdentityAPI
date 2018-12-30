@@ -40,6 +40,13 @@ The above command can optionally be modified to pass parameters into the build p
 
 	--build-arg VCX_CREDENTIAL_VALUE="Test CU"
 
+**Timeouts:**
+
+	--build-arg VCX_TIMEOUT_CONNECTIONINVITE="600"
+	--build-arg VCX_TIMEOUT_CREDENTIALOFFER="300"
+	--build-arg VCX_TIMEOUT_CREDENTIALSEND="120"
+	--build-arg VCX_TIMEOUT_PROOFREQUEST="300"
+
 **Connection persistence:**
 
 	--build-arg VCX_DID_MAPPER="db"

@@ -13,6 +13,10 @@ public class VcxConfiguration {
 	public static final String VCX_INSTITUTION_VERKEY;
 	public static final String VCX_CREDENTIAL_NAME;
 	public static final String VCX_CREDENTIAL_VALUE;
+	public static final long VCX_TIMEOUT_CONNECTIONINVITE;
+	public static final long VCX_TIMEOUT_CREDENTIALOFFER;
+	public static final long VCX_TIMEOUT_CREDENTIALSEND;
+	public static final long VCX_TIMEOUT_PROOFREQUEST;
 	public static final String VCX_DID_MAPPER;
 	public static final String VCX_SCHEMA_ID;
 	public static final String VCX_CREDDEF_ID;
@@ -48,6 +52,26 @@ public class VcxConfiguration {
 		if (E_VCX_CREDENTIAL_VALUE == null) throw new RuntimeException("Variable VCX_CREDENTIAL_VALUE not set.");
 		VCX_CREDENTIAL_VALUE = E_VCX_CREDENTIAL_VALUE;
 		if (logger.isInfoEnabled()) logger.info("VCX_CREDENTIAL_VALUE: " + VCX_CREDENTIAL_VALUE);
+
+		String E_VCX_TIMEOUT_CONNECTIONINVITE = System.getenv("VCX_TIMEOUT_CONNECTIONINVITE");
+		if (E_VCX_TIMEOUT_CONNECTIONINVITE == null) throw new RuntimeException("Variable VCX_TIMEOUT_CONNECTIONINVITE not set.");
+		VCX_TIMEOUT_CONNECTIONINVITE = Long.parseLong(E_VCX_TIMEOUT_CONNECTIONINVITE);
+		if (logger.isInfoEnabled()) logger.info("VCX_TIMEOUT_CONNECTIONINVITE: " + VCX_TIMEOUT_CONNECTIONINVITE);
+
+		String E_VCX_TIMEOUT_CREDENTIALOFFER = System.getenv("VCX_TIMEOUT_CREDENTIALOFFER");
+		if (E_VCX_TIMEOUT_CREDENTIALOFFER == null) throw new RuntimeException("Variable VCX_TIMEOUT_CREDENTIALOFFER not set.");
+		VCX_TIMEOUT_CREDENTIALOFFER = Long.parseLong(E_VCX_TIMEOUT_CREDENTIALOFFER);
+		if (logger.isInfoEnabled()) logger.info("VCX_TIMEOUT_CREDENTIALOFFER: " + VCX_TIMEOUT_CREDENTIALOFFER);
+
+		String E_VCX_TIMEOUT_CREDENTIALSEND = System.getenv("VCX_TIMEOUT_CREDENTIALSEND");
+		if (E_VCX_TIMEOUT_CREDENTIALSEND == null) throw new RuntimeException("Variable VCX_TIMEOUT_CREDENTIALSEND not set.");
+		VCX_TIMEOUT_CREDENTIALSEND = Long.parseLong(E_VCX_TIMEOUT_CREDENTIALSEND);
+		if (logger.isInfoEnabled()) logger.info("VCX_TIMEOUT_CREDENTIALSEND: " + VCX_TIMEOUT_CREDENTIALSEND);
+
+		String E_VCX_TIMEOUT_PROOFREQUEST = System.getenv("VCX_TIMEOUT_PROOFREQUEST");
+		if (E_VCX_TIMEOUT_PROOFREQUEST == null) throw new RuntimeException("Variable VCX_TIMEOUT_PROOFREQUEST not set.");
+		VCX_TIMEOUT_PROOFREQUEST = Long.parseLong(E_VCX_TIMEOUT_PROOFREQUEST);
+		if (logger.isInfoEnabled()) logger.info("VCX_TIMEOUT_PROOFREQUEST: " + VCX_TIMEOUT_PROOFREQUEST);
 
 		String E_VCX_DID_MAPPER = System.getenv("VCX_DID_MAPPER");
 		if (E_VCX_DID_MAPPER == null) throw new RuntimeException("Variable VCX_DID_MAPPER not set.");
