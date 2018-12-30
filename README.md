@@ -16,7 +16,7 @@ Documentation:
 
 	docker build -f ./docker/Dockerfile . -t culedger-identityapi
 
-## How to configure (optional)
+## How to configure
 
 The above command can optionally be modified to pass parameters into the build process:
 
