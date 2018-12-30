@@ -22,7 +22,6 @@ public class VcxConfiguration {
 	public static final long VCX_TIMEOUT_CREDENTIALOFFER;
 	public static final long VCX_TIMEOUT_CREDENTIALSEND;
 	public static final long VCX_TIMEOUT_PROOFREQUEST;
-	public static final String VCX_DID_MAPPER;
 	public static final String VCX_SCHEMA_ID;
 	public static final String VCX_CREDDEF_ID;
 
@@ -82,11 +81,6 @@ public class VcxConfiguration {
 		VCX_TIMEOUT_PROOFREQUEST = Long.parseLong(E_VCX_TIMEOUT_PROOFREQUEST);
 		if (logger.isInfoEnabled()) logger.info("VCX_TIMEOUT_PROOFREQUEST: " + VCX_TIMEOUT_PROOFREQUEST);
 
-		String E_VCX_DID_MAPPER = System.getenv("VCX_DID_MAPPER");
-		if (E_VCX_DID_MAPPER == null) throw new RuntimeException("Variable VCX_DID_MAPPER not set.");
-		VCX_DID_MAPPER = E_VCX_DID_MAPPER;
-		if (logger.isInfoEnabled()) logger.info("VCX_DID_MAPPER: " + VCX_DID_MAPPER);
-
 		String E_VCX_SCHEMA_ID = System.getenv("VCX_SCHEMA_ID");
 		if (E_VCX_SCHEMA_ID != null && E_VCX_SCHEMA_ID.trim().isEmpty()) E_VCX_SCHEMA_ID = null;
 		VCX_SCHEMA_ID = E_VCX_SCHEMA_ID;
@@ -111,7 +105,6 @@ public class VcxConfiguration {
 		c.add(makeCULedgerKeyPair("VCX_TIMEOUT_CREDENTIALOFFER", "" + VCX_TIMEOUT_CREDENTIALOFFER));
 		c.add(makeCULedgerKeyPair("VCX_TIMEOUT_CREDENTIALSEND", "" + VCX_TIMEOUT_CREDENTIALSEND));
 		c.add(makeCULedgerKeyPair("VCX_TIMEOUT_PROOFREQUEST", "" + VCX_TIMEOUT_PROOFREQUEST));
-		c.add(makeCULedgerKeyPair("VCX_DID_MAPPER", VCX_DID_MAPPER));
 		c.add(makeCULedgerKeyPair("VCX_SCHEMA_ID", VCX_SCHEMA_ID));
 		c.add(makeCULedgerKeyPair("VCX_CREDDEF_ID", VCX_CREDDEF_ID));
 

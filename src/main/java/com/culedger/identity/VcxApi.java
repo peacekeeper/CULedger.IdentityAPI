@@ -1,13 +1,10 @@
 package com.culedger.identity;
 import com.culedger.identity.didmapper.DbMemberDidMapper;
 import com.culedger.identity.didmapper.MemberDidMapper;
-import com.culedger.identity.didmapper.MemoryMemberDidMapper;
 
 import net.minidev.json.parser.JSONParser;
 
 public class VcxApi {
-
-	static final JSONParser jsonParser = new JSONParser(JSONParser.MODE_STRICTEST);
 
 	public static final int VCX_UNDEFINED = 0;
 	public static final int VCX_INITIALIZED = 1;
@@ -23,6 +20,7 @@ public class VcxApi {
 	public static final int PROOFSTATE_INVALID = 2;
 
 	static MemberDidMapper memberDidMapper;
+	static JSONParser jsonParser;
 
 	static {
 
@@ -31,18 +29,8 @@ public class VcxApi {
 			VcxConfiguration.init();
 			VcxInit.init();
 
-			// create member->DID mapper
-
-			if (VcxConfiguration.VCX_DID_MAPPER.equals("memory")) {
-
-				memberDidMapper = new MemoryMemberDidMapper();
-			} else if (VcxConfiguration.VCX_DID_MAPPER.equals("db")) {
-
-				memberDidMapper = new DbMemberDidMapper();
-			} else {
-
-				throw new IllegalArgumentException("Unknown DID->mapper type.");
-			}
+			memberDidMapper = new DbMemberDidMapper();
+			jsonParser = new JSONParser(JSONParser.MODE_STRICTEST);
 		} catch (Exception ex) {
 
 			ex.printStackTrace(System.err);

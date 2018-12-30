@@ -47,10 +47,6 @@ The above command can optionally be modified to pass parameters into the build p
 	--build-arg VCX_TIMEOUT_CREDENTIALSEND="120"
 	--build-arg VCX_TIMEOUT_PROOFREQUEST="300"
 
-**Connection persistence:**
-
-	--build-arg VCX_DID_MAPPER="db"
-
 **CULedger Demo Build**
 
 	docker build -f ./docker/Dockerfile . -t culedger-identityapi -build-arg VCX_INSTITUTION_LOGO_URL="https://culedger.s3.amazonaws.com/Connect.Me/CULedger-ConnectMe-Logo-256x256.png" --build-arg VCX_INSTITUTION_NAME="CULedger" --build-arg VCX_CREDENTIAL_NAME="MyCUID" 
