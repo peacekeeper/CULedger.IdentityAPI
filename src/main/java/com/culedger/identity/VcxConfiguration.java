@@ -21,6 +21,10 @@ public class VcxConfiguration {
 	public static final String VCX_SCHEMA_ID;
 	public static final String VCX_CREDDEF_ID;
 
+	public static void init() {
+
+	}
+
 	static {
 
 		String E_VCX_INSTITUTION_LOGO_URL = System.getenv("VCX_INSTITUTION_LOGO_URL");
@@ -87,9 +91,5 @@ public class VcxConfiguration {
 		if (E_VCX_CREDDEF_ID != null && E_VCX_CREDDEF_ID.trim().isEmpty()) E_VCX_CREDDEF_ID = null;
 		VCX_CREDDEF_ID = E_VCX_CREDDEF_ID;
 		if (logger.isInfoEnabled()) logger.info("VCX_CREDDEF_ID: " + VCX_CREDDEF_ID);
-	}
-
-	public static void init() {
-
 	}
 }
