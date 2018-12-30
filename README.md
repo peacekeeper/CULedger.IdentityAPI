@@ -36,6 +36,10 @@ The above command can optionally be modified to pass parameters into the build p
 
 	--build-arg VCX_CREDENTIAL_NAME="MyCUID"
 
+**Credential value:**
+
+	--build-arg VCX_CREDENTIAL_VALUE="Test CU"
+
 **Connection persistence:**
 
 	--build-arg VCX_DID_MAPPER="db"

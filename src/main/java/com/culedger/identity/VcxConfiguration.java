@@ -12,6 +12,7 @@ public class VcxConfiguration {
 	public static final String VCX_INSTITUTION_DID;
 	public static final String VCX_INSTITUTION_VERKEY;
 	public static final String VCX_CREDENTIAL_NAME;
+	public static final String VCX_CREDENTIAL_VALUE;
 	public static final String VCX_DID_MAPPER;
 	public static final String VCX_SCHEMA_ID;
 	public static final String VCX_CREDDEF_ID;
@@ -42,6 +43,11 @@ public class VcxConfiguration {
 		if (E_VCX_CREDENTIAL_NAME == null) throw new RuntimeException("Variable VCX_CREDENTIAL_NAME not set.");
 		VCX_CREDENTIAL_NAME = E_VCX_CREDENTIAL_NAME;
 		if (logger.isInfoEnabled()) logger.info("VCX_CREDENTIAL_NAME: " + VCX_CREDENTIAL_NAME);
+
+		String E_VCX_CREDENTIAL_VALUE = System.getenv("VCX_CREDENTIAL_VALUE");
+		if (E_VCX_CREDENTIAL_VALUE == null) throw new RuntimeException("Variable VCX_CREDENTIAL_VALUE not set.");
+		VCX_CREDENTIAL_VALUE = E_VCX_CREDENTIAL_VALUE;
+		if (logger.isInfoEnabled()) logger.info("VCX_CREDENTIAL_VALUE: " + VCX_CREDENTIAL_VALUE);
 
 		String E_VCX_DID_MAPPER = System.getenv("VCX_DID_MAPPER");
 		if (E_VCX_DID_MAPPER == null) throw new RuntimeException("Variable VCX_DID_MAPPER not set.");

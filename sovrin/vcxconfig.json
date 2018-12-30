@@ -5,7 +5,7 @@
   "genesis_path": "./pool_transactions_sandbox_genesis",
   "institution_did": "--vcx_institution_did--",
   "institution_logo_url": "--vcx_institution_logo_url--",
-  "institution_name": "CULedger",
+  "institution_name": "--vcx_institution_name--",
   "institution_verkey": "--vcx_institution_verkey--",
   "remote_to_sdk_did": "HSMsAQMri5ukn6gCCdeu3h",
   "remote_to_sdk_verkey": "9xcagnPvM5T7DsEAsXDY1eyrCSLn84v2KV4XUfYdBBNo",

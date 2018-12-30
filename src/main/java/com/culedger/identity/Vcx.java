@@ -298,7 +298,7 @@ public class Vcx {
 
 			// create credential
 
-			String credentialData = credentialData(VcxConfiguration.VCX_INSTITUTION_NAME);
+			String credentialData = credentialData(VcxConfiguration.VCX_CREDENTIAL_VALUE);
 			String credentialName = VcxConfiguration.VCX_CREDENTIAL_NAME;
 			Integer credentialHandle = IssuerApi.issuerCreateCredential(sourceId, credDefId, null, credentialData, credentialName, "0").get();
 
