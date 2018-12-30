@@ -1,7 +1,12 @@
 package com.culedger.identity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import io.swagger.model.CULedgerKeyPair;
 
 public class VcxConfiguration {
 
@@ -91,5 +96,34 @@ public class VcxConfiguration {
 		if (E_VCX_CREDDEF_ID != null && E_VCX_CREDDEF_ID.trim().isEmpty()) E_VCX_CREDDEF_ID = null;
 		VCX_CREDDEF_ID = E_VCX_CREDDEF_ID;
 		if (logger.isInfoEnabled()) logger.info("VCX_CREDDEF_ID: " + VCX_CREDDEF_ID);
+	}
+
+	static List<CULedgerKeyPair> makeCULedgerKeyPairs() {
+
+		List<CULedgerKeyPair> c = new ArrayList<CULedgerKeyPair> ();
+		c.add(makeCULedgerKeyPair("VCX_INSTITUTION_LOGO_URL", VCX_INSTITUTION_LOGO_URL));
+		c.add(makeCULedgerKeyPair("VCX_INSTITUTION_NAME", VCX_INSTITUTION_NAME));
+		c.add(makeCULedgerKeyPair("VCX_INSTITUTION_DID", VCX_INSTITUTION_DID));
+		c.add(makeCULedgerKeyPair("VCX_INSTITUTION_VERKEY", VCX_INSTITUTION_VERKEY));
+		c.add(makeCULedgerKeyPair("VCX_CREDENTIAL_NAME", VCX_CREDENTIAL_NAME));
+		c.add(makeCULedgerKeyPair("VCX_CREDENTIAL_VALUE", VCX_CREDENTIAL_VALUE));
+		c.add(makeCULedgerKeyPair("VCX_TIMEOUT_CONNECTIONINVITE", "" + VCX_TIMEOUT_CONNECTIONINVITE));
+		c.add(makeCULedgerKeyPair("VCX_TIMEOUT_CREDENTIALOFFER", "" + VCX_TIMEOUT_CREDENTIALOFFER));
+		c.add(makeCULedgerKeyPair("VCX_TIMEOUT_CREDENTIALSEND", "" + VCX_TIMEOUT_CREDENTIALSEND));
+		c.add(makeCULedgerKeyPair("VCX_TIMEOUT_PROOFREQUEST", "" + VCX_TIMEOUT_PROOFREQUEST));
+		c.add(makeCULedgerKeyPair("VCX_DID_MAPPER", VCX_DID_MAPPER));
+		c.add(makeCULedgerKeyPair("VCX_SCHEMA_ID", VCX_SCHEMA_ID));
+		c.add(makeCULedgerKeyPair("VCX_CREDDEF_ID", VCX_CREDDEF_ID));
+
+		return c;
+	}
+
+	private static CULedgerKeyPair makeCULedgerKeyPair(String valueName, String value) {
+
+		CULedgerKeyPair c = new CULedgerKeyPair();
+		c.setValueName(valueName);
+		c.setValue(value);
+
+		return c;
 	}
 }

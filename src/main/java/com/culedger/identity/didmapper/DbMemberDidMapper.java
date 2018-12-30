@@ -23,7 +23,7 @@ public class DbMemberDidMapper implements MemberDidMapper {
 		try (final Options options = new Options()) {
 
 			options.setCreateIfMissing(true);
-			db = RocksDB.open(options, ".");
+			db = RocksDB.open(options, "./memberdidmapper/");
 		} catch (RocksDBException ex) {
 
 			if (logger.isErrorEnabled()) logger.error("Cannot initialize DB: " + ex.getMessage(), ex);

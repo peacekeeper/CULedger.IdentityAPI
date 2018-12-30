@@ -1,6 +1,9 @@
 package io.swagger.api;
 
 import io.swagger.model.CULedgerKeyPair;
+
+import com.culedger.identity.Vcx;
+import com.culedger.identity.VcxApiConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -44,8 +47,7 @@ public class ConfigApiController implements ConfigApi {
     }
 
     public ResponseEntity<List<CULedgerKeyPair>> listConfigSettings() {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<List<CULedgerKeyPair>>(HttpStatus.NOT_IMPLEMENTED);
+        return VcxApiConfig.listConfigSettings();
     }
 
     public ResponseEntity<String> setConfigValue(@ApiParam(value = "" ,required=true )  @Valid @RequestBody String body, @ApiParam(value = "valueName in valueName/value keypair",required=true) @PathVariable("valueName") String valueName) {
