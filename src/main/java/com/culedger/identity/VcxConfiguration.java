@@ -7,14 +7,21 @@ public class VcxConfiguration {
 
 	private static final Logger logger = LoggerFactory.getLogger(Vcx.class);
 
+	public static final String VCX_INSTITUTION_LOGO_URL;
 	public static final String VCX_INSTITUTION_NAME;
 	public static final String VCX_INSTITUTION_DID;
+	public static final String VCX_INSTITUTION_VERKEY;
 	public static final String VCX_CREDENTIAL_NAME;
 	public static final String VCX_DID_MAPPER;
 	public static final String VCX_SCHEMA_ID;
 	public static final String VCX_CREDDEF_ID;
 
 	static {
+
+		String E_VCX_INSTITUTION_LOGO_URL = System.getenv("VCX_INSTITUTION_LOGO_URL");
+		if (E_VCX_INSTITUTION_LOGO_URL == null) throw new RuntimeException("Variable VCX_INSTITUTION_LOGO_URL not set.");
+		VCX_INSTITUTION_LOGO_URL = E_VCX_INSTITUTION_LOGO_URL;
+		if (logger.isInfoEnabled()) logger.info("VCX_INSTITUTION_LOGO_URL: " + VCX_INSTITUTION_LOGO_URL);
 
 		String E_VCX_INSTITUTION_NAME = System.getenv("VCX_INSTITUTION_NAME");
 		if (E_VCX_INSTITUTION_NAME == null) throw new RuntimeException("Variable VCX_INSTITUTION_NAME not set.");
@@ -25,6 +32,11 @@ public class VcxConfiguration {
 		if (E_VCX_INSTITUTION_DID == null) throw new RuntimeException("Variable VCX_INSTITUTION_DID not set.");
 		VCX_INSTITUTION_DID = E_VCX_INSTITUTION_DID;
 		if (logger.isInfoEnabled()) logger.info("VCX_INSTITUTION_DID: " + VCX_INSTITUTION_DID);
+
+		String E_VCX_INSTITUTION_VERKEY = System.getenv("VCX_INSTITUTION_VERKEY");
+		if (E_VCX_INSTITUTION_VERKEY == null) throw new RuntimeException("Variable VCX_INSTITUTION_VERKEY not set.");
+		VCX_INSTITUTION_VERKEY = E_VCX_INSTITUTION_VERKEY;
+		if (logger.isInfoEnabled()) logger.info("VCX_INSTITUTION_VERKEY: " + VCX_INSTITUTION_VERKEY);
 
 		String E_VCX_CREDENTIAL_NAME = System.getenv("VCX_CREDENTIAL_NAME");
 		if (E_VCX_CREDENTIAL_NAME == null) throw new RuntimeException("Variable VCX_CREDENTIAL_NAME not set.");

@@ -3,7 +3,6 @@ import java.io.File;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.hyperledger.indy.sdk.IndyException;
 import org.hyperledger.indy.sdk.LibIndy;
 import org.hyperledger.indy.sdk.ledger.Ledger;
