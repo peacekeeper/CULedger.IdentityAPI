@@ -17,13 +17,11 @@ import io.swagger.model.CULedgerKeyPair;
 import io.swagger.model.CULedgerMember;
 import io.swagger.model.CULedgerOnboardingData;
 import net.minidev.json.JSONObject;
-import net.minidev.json.parser.JSONParser;
 import net.minidev.json.parser.ParseException;
 
-public class VcxApiMember {
+public class VcxApiMember extends VcxApi {
 
 	private static final Logger logger = LoggerFactory.getLogger(VcxApiMember.class);
-	private static final JSONParser jsonParser = new JSONParser(JSONParser.MODE_STRICTEST);
 
 	public static ResponseEntity<CULedgerOnboardingData> memberOnBoard(CULedgerOnboardingData cuLedgerOnboardingData, String memberId) {
 
@@ -35,7 +33,7 @@ public class VcxApiMember {
 
 			// write to member DID mapper
 
-			Vcx.memberDidMapper.add(memberId, connectionHandle);
+			VcxApi.memberDidMapper.add(memberId, connectionHandle);
 			if (logger.isInfoEnabled()) logger.info("Added member ID " + memberId + " with connection handle " + connectionHandle);
 
 			// create credential
@@ -59,7 +57,7 @@ public class VcxApiMember {
 
 			// read from member DID mapper
 
-			Integer connectionHandle = Vcx.memberDidMapper.getAsConnectionHandle(memberId);
+			Integer connectionHandle = VcxApi.memberDidMapper.getAsConnectionHandle(memberId);
 			if (logger.isInfoEnabled()) logger.info("For member ID " + memberId + " got connection handle " + connectionHandle);
 
 			if (connectionHandle == null) return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
@@ -84,7 +82,7 @@ public class VcxApiMember {
 
 			// read from member DID mapper
 
-			Integer connectionHandle = Vcx.memberDidMapper.getAsConnectionHandle(memberId);
+			Integer connectionHandle = VcxApi.memberDidMapper.getAsConnectionHandle(memberId);
 			if (logger.isInfoEnabled()) logger.info("For member ID " + memberId + " got connection handle " + connectionHandle);
 
 			if (connectionHandle == null) return new ResponseEntity<CULedgerMember>(HttpStatus.NOT_FOUND);
@@ -120,7 +118,7 @@ public class VcxApiMember {
 				Integer proofWaitGetStateResult = ProofApi.proofGetState(proofHandle).get();
 				if (logger.isInfoEnabled()) logger.info("WAIT: For proof handle " + connectionHandle + " got state result " + proofWaitGetStateResult);
 
-				if (proofWaitGetStateResult.intValue() != Vcx.VCX_OFFERSENT) break;
+				if (proofWaitGetStateResult.intValue() != VcxApi.VCX_OFFERSENT) break;
 				Thread.sleep(500);
 
 				Integer proofWaitUpdateStateResult = ProofApi.proofUpdateState(proofHandle).get();
@@ -133,7 +131,7 @@ public class VcxApiMember {
 			GetProofResult getProofResult = ProofApi.getProof(proofHandle, connectionHandle).get();
 			if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " and connection handle " + connectionHandle + " got proof result " + getProofResult + " with response data " + getProofResult.getResponse_data() + " and proof state " + getProofResult.getProof_state());
 
-			if (getProofResult.getProof_state() != Vcx.PROOFSTATE_VERIFIED) {
+			if (getProofResult.getProof_state() != VcxApi.PROOFSTATE_VERIFIED) {
 
 				return new ResponseEntity<CULedgerMember>(HttpStatus.UNAUTHORIZED);
 			}
@@ -209,7 +207,7 @@ public class VcxApiMember {
 			Integer connectionGetStateResult = ConnectionApi.connectionGetState(connectionHandle).get();
 			if (logger.isInfoEnabled()) logger.info("WAIT: For connection handle " + connectionHandle + " got state result " + connectionGetStateResult);
 
-			if (connectionGetStateResult.intValue() != Vcx.VCX_OFFERSENT) break;
+			if (connectionGetStateResult.intValue() != VcxApi.VCX_OFFERSENT) break;
 			Thread.sleep(500);
 
 			Integer connectionWaitUpdateStateResult = ConnectionApi.vcxConnectionUpdateState(connectionHandle).get();
@@ -253,7 +251,7 @@ public class VcxApiMember {
 			Integer credentialWaitGetStateResult = IssuerApi.issuerCredntialGetState(credentialHandle).get();
 			if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + connectionHandle + " got state result " + credentialWaitGetStateResult);
 
-			if (credentialWaitGetStateResult.intValue() != Vcx.VCX_OFFERSENT) break;
+			if (credentialWaitGetStateResult.intValue() != VcxApi.VCX_OFFERSENT) break;
 			Thread.sleep(500);
 
 			Integer credentialWaitUpdateStateResult = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();
@@ -282,7 +280,7 @@ public class VcxApiMember {
 			Integer credentialWaitGetStateResult = IssuerApi.issuerCredntialGetState(credentialHandle).get();
 			if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + credentialHandle + " got state result " + credentialWaitGetStateResult);
 
-			if (credentialWaitGetStateResult.intValue() != Vcx.VCX_REQUESTRECEIVED) break;
+			if (credentialWaitGetStateResult.intValue() != VcxApi.VCX_REQUESTRECEIVED) break;
 			Thread.sleep(500);
 
 			Integer credentialWaitUpdateStateResult = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();

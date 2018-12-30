@@ -60,6 +60,10 @@ The above command can optionally be modified to pass parameters into the build p
 
 	docker run -ti -p 8080:8080 culedger-identityapi:latest
 
+## How to run with persistent volume
+
+	docker run -ti -p 8080:8080 -v culedger-identityapi-state:/opt/culedger-identityapi-state culedger-identityapi:latest
+
 ## How to test via Swagger UI
 
 Open `http://localhost:8080/darrellodonnell/CULedger.Identity/0.1.0/swagger-ui.html` in your local web browser.

@@ -2,7 +2,7 @@ package io.swagger.api;
 
 import io.swagger.model.CULedgerKeyPair;
 
-import com.culedger.identity.Vcx;
+import com.culedger.identity.VcxApi;
 import com.culedger.identity.VcxApiConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;

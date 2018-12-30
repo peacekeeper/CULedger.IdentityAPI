@@ -10,7 +10,7 @@ import io.swagger.model.CULedgerKeyPair;
 
 public class VcxConfiguration {
 
-	private static final Logger logger = LoggerFactory.getLogger(Vcx.class);
+	private static final Logger logger = LoggerFactory.getLogger(VcxApi.class);
 
 	public static final String VCX_INSTITUTION_LOGO_URL;
 	public static final String VCX_INSTITUTION_NAME;

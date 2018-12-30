@@ -45,7 +45,6 @@ RUN apt-get install -y libindy=1.6.8
 # copy sovrin files
 
 ADD ./sovrin /opt/sovrin
-RUN tar -xzf /opt/sovrin/indy_client.tgz -C /root
 
 # install sovtoken and vcx
 
@@ -63,19 +62,22 @@ RUN mvn install:install-file -Dfile=/opt/sovrin/com.evernym-vcx_1.0.0-07-12-2018
 
 # copy api files
 
-ADD . /opt/api
+ADD . /opt/culedger-identityapi
 
 # build api
 
-RUN cd /opt/api && mvn install package -N -DskipTests
+RUN cd /opt/culedger-identityapi && mvn install package -N -DskipTests
+
+# state
+
+RUN mkdir /opt/culedger-identityapi-state && mkdir /opt/culedger-identityapi-state/.indy_client/ && mkdir /opt/culedger-identityapi-state/memberdidmapper/
+RUN tar -xzf /opt/sovrin/indy_client.tgz -C /opt/culedger-identityapi-state/
+RUN ln -s /opt/culedger-identityapi-state/.indy_client /root/.indy_client
+RUN ln -s /opt/culedger-identityapi-state/memberdidmapper /opt/culedger-identityapi/
 
 # clean up
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# variables
-
-ENV variable_key=variable_value
 
 # configure
 
@@ -102,5 +104,5 @@ ENV VCX_CREDDEF_ID ${VCX_CREDDEF_ID}
 
 EXPOSE 8080
 
-RUN chmod a+rx /opt/api/docker/run.sh
-CMD "/opt/api/docker/run.sh"
+RUN chmod a+rx /opt/culedger-identityapi/docker/run.sh
+CMD "/opt/culedger-identityapi/docker/run.sh"

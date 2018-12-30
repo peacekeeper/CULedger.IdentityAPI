@@ -1,17 +1,13 @@
 package com.culedger.identity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.culedger.identity.didmapper.DbMemberDidMapper;
 import com.culedger.identity.didmapper.MemberDidMapper;
 import com.culedger.identity.didmapper.MemoryMemberDidMapper;
 
 import net.minidev.json.parser.JSONParser;
 
-public class Vcx {
+public class VcxApi {
 
-	private static final Logger logger = LoggerFactory.getLogger(Vcx.class);
-	private static final JSONParser jsonParser = new JSONParser(JSONParser.MODE_STRICTEST);
+	static final JSONParser jsonParser = new JSONParser(JSONParser.MODE_STRICTEST);
 
 	public static final int VCX_UNDEFINED = 0;
 	public static final int VCX_INITIALIZED = 1;
@@ -30,10 +26,10 @@ public class Vcx {
 
 	static {
 
-		VcxConfiguration.init();
-		VcxInit.init();
-
 		try {
+
+			VcxConfiguration.init();
+			VcxInit.init();
 
 			// create member->DID mapper
 
@@ -49,7 +45,6 @@ public class Vcx {
 			}
 		} catch (Exception ex) {
 
-			if (logger.isErrorEnabled()) logger.error(ex.getMessage(), ex);
 			ex.printStackTrace(System.err);
 			System.exit(-1);
 		}

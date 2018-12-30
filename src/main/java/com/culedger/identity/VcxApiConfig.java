@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 import io.swagger.model.CULedgerKeyPair;
 
-public class VcxApiConfig {
+public class VcxApiConfig extends VcxApi {
 
     public static ResponseEntity<List<CULedgerKeyPair>> listConfigSettings() {
 
