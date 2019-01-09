@@ -49,7 +49,7 @@ The above command can optionally be modified to pass parameters into the build p
 
 **CULedger Demo Build**
 
-	docker build -f ./docker/Dockerfile . -t culedger-identityapi -build-arg VCX_INSTITUTION_LOGO_URL="https://culedger.s3.amazonaws.com/Connect.Me/CULedger-ConnectMe-Logo-256x256.png" --build-arg VCX_INSTITUTION_NAME="CULedger" --build-arg VCX_CREDENTIAL_NAME="MyCUID" 
+	docker build -f ./docker/Dockerfile . -t culedger-identityapi --build-arg VCX_INSTITUTION_LOGO_URL="https://culedger.s3.amazonaws.com/Connect.Me/CULedger-ConnectMe-Logo-256x256.png" --build-arg VCX_INSTITUTION_NAME="CULedger" --build-arg VCX_CREDENTIAL_NAME="MyCUID" 
 
 
 ## How to run
