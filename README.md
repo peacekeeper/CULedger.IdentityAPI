@@ -69,7 +69,7 @@ The above command can optionally be modified to pass parameters into the build p
 
 Open `http://localhost:8080/darrellodonnell/CULedger.Identity/0.1.0/swagger-ui.html` in your local web browser.
 
-### How to onboard a member:
+### How to onboard a member: (see onboard.sh for sample cURL command to run)
 
 If the member ID is *ms7823* and their phone number is *+436643154848*:
 
@@ -81,7 +81,8 @@ If the member ID is *ms7823* and their phone number is *+436643154848*:
 	    "memberEmail": "test@gmail.com",
 	    "displayTextFromFI": "Let's get connected via MyCUID!",
 	    "credentialData": {
-	        "id": null,
+	        "id": "UUID-GOES-HERE",
+          "Institution": "CULedger Credit Union",
 	        "memberId": "ms7823",
 	        "status": "active",
 	        "memberSince": null,
@@ -91,13 +92,19 @@ If the member ID is *ms7823* and their phone number is *+436643154848*:
 
 Response (after long wait time): HTTP 200 = Connection established and myCUID credential issued, HTTP 500 = Error
 
-### How to authenticate a member:
+### How to authenticate a member: (see authenticate.sh for sample cURL command to run)
 
 If the member ID is *ms7823*:
 
 **PUT** call to `/member/ms7823/authenticate`
 
 Response (after long wait time): HTTP 200 = Valid myCUID proof Received, HTTP 401 = Invalid proof Received, HTTP 404 = Member ID unknown (not onboarded), HTTP 500 = Error
+
+## Testing Setup ##
+* Install the ConnectMe app from link above
+* Make sure to include phone number with ConnectMe app installed when performing API calls
+* After, running onboard request, you will receive a text message that CULedger wants to connect. Click that link and follow the instructions in ConnectMe app.
+* You must then accept the MyCUID offer before the API will return with completion status.
 
 ## How to test using API Client
 
