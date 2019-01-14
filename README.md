@@ -12,6 +12,11 @@ Documentation:
   * https://culedger.s3.amazonaws.com/diagrams/OnboardingMember-CULedgerDetail.svg
   * https://culedger.s3.amazonaws.com/diagrams/OnboardingMember-EvernymDetail.svg
 
+## Connect.Me via TestFlight ##
+
+https://testflight.apple.com/join/ktV7uxc3
+
+
 ## How to build
 
 	docker build -f ./docker/Dockerfile . -t culedger-identityapi
