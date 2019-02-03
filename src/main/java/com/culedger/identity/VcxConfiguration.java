@@ -95,6 +95,7 @@ public class VcxConfiguration {
 	static List<CULedgerKeyPair> makeCULedgerKeyPairs() {
 
 		List<CULedgerKeyPair> c = new ArrayList<CULedgerKeyPair> ();
+
 		c.add(makeCULedgerKeyPair("VCX_INSTITUTION_LOGO_URL", VCX_INSTITUTION_LOGO_URL));
 		c.add(makeCULedgerKeyPair("VCX_INSTITUTION_NAME", VCX_INSTITUTION_NAME));
 		c.add(makeCULedgerKeyPair("VCX_INSTITUTION_DID", VCX_INSTITUTION_DID));
@@ -107,6 +108,10 @@ public class VcxConfiguration {
 		c.add(makeCULedgerKeyPair("VCX_TIMEOUT_PROOFREQUEST", "" + VCX_TIMEOUT_PROOFREQUEST));
 		c.add(makeCULedgerKeyPair("VCX_SCHEMA_ID", VCX_SCHEMA_ID));
 		c.add(makeCULedgerKeyPair("VCX_CREDDEF_ID", VCX_CREDDEF_ID));
+
+		c.add(makeCULedgerKeyPair("schemaId", VcxInit.schemaId));
+		c.add(makeCULedgerKeyPair("credDefId", VcxInit.credDefId));
+		c.add(makeCULedgerKeyPair("schemaSeqNo", "" + VcxInit.schemaSeqNo));
 
 		return c;
 	}

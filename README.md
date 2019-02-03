@@ -65,6 +65,10 @@ The above command can optionally be modified to pass parameters into the build p
 
 	docker run -ti -p 8080:8080 -v culedger-identityapi-state:/opt/culedger-identityapi-state culedger-identityapi:latest
 
+## How to run with pre-existing schema ID and creddef ID
+
+	docker run -ti -p 8080:8080 -e VCX_SCHEMA_ID=SsPVi4HpA8jJx7wcTqCEQ4:2:mycuid-315957:0.0.1 -e VCX_CREDDEF_ID=SsPVi4HpA8jJx7wcTqCEQ4:3:CL:30062:tag-461289 culedger-identityapi:latest
+
 ## How to test via Swagger UI
 
 Open `http://localhost:8080/darrellodonnell/CULedger.Identity/0.1.0/swagger-ui.html` in your local web browser.
