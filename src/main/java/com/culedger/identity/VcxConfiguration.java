@@ -1,8 +1,15 @@
 package com.culedger.identity;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,10 +19,10 @@ public class VcxConfiguration {
 
 	private static final Logger logger = LoggerFactory.getLogger(VcxApi.class);
 
+	public static final String VCX_INSTITUTION_DID_SEED;
+	public static final String VCX_GENESIS_PATH;
 	public static final String VCX_INSTITUTION_LOGO_URL;
 	public static final String VCX_INSTITUTION_NAME;
-	public static final String VCX_INSTITUTION_DID;
-	public static final String VCX_INSTITUTION_VERKEY;
 	public static final String VCX_CREDENTIAL_NAME;
 	public static final String VCX_CREDENTIAL_VALUE;
 	public static final long VCX_TIMEOUT_CONNECTIONINVITE;
@@ -25,11 +32,23 @@ public class VcxConfiguration {
 	public static final String VCX_SCHEMA_ID;
 	public static final String VCX_CREDDEF_ID;
 
+	public static JSONObject jsonObjectVcxConfig;
+
 	public static void init() {
 
 	}
 
 	static {
+
+		String E_VCX_INSTITUTION_DID_SEED = System.getenv("VCX_INSTITUTION_DID_SEED");
+		if (E_VCX_INSTITUTION_DID_SEED == null) throw new RuntimeException("Variable VCX_INSTITUTION_DID_SEED not set.");
+		VCX_INSTITUTION_DID_SEED = E_VCX_INSTITUTION_DID_SEED;
+		if (logger.isInfoEnabled()) logger.info("VCX_INSTITUTION_DID_SEED: " + VCX_INSTITUTION_DID_SEED);
+
+		String E_VCX_GENESIS_PATH = System.getenv("VCX_GENESIS_PATH");
+		if (E_VCX_GENESIS_PATH == null) throw new RuntimeException("Variable VCX_GENESIS_PATH not set.");
+		VCX_GENESIS_PATH = E_VCX_GENESIS_PATH;
+		if (logger.isInfoEnabled()) logger.info("VCX_GENESIS_PATH: " + VCX_GENESIS_PATH);
 
 		String E_VCX_INSTITUTION_LOGO_URL = System.getenv("VCX_INSTITUTION_LOGO_URL");
 		if (E_VCX_INSTITUTION_LOGO_URL == null) throw new RuntimeException("Variable VCX_INSTITUTION_LOGO_URL not set.");
@@ -40,16 +59,6 @@ public class VcxConfiguration {
 		if (E_VCX_INSTITUTION_NAME == null) throw new RuntimeException("Variable VCX_INSTITUTION_NAME not set.");
 		VCX_INSTITUTION_NAME = E_VCX_INSTITUTION_NAME;
 		if (logger.isInfoEnabled()) logger.info("VCX_INSTITUTION_NAME: " + VCX_INSTITUTION_NAME);
-
-		String E_VCX_INSTITUTION_DID = System.getenv("VCX_INSTITUTION_DID");
-		if (E_VCX_INSTITUTION_DID == null) throw new RuntimeException("Variable VCX_INSTITUTION_DID not set.");
-		VCX_INSTITUTION_DID = E_VCX_INSTITUTION_DID;
-		if (logger.isInfoEnabled()) logger.info("VCX_INSTITUTION_DID: " + VCX_INSTITUTION_DID);
-
-		String E_VCX_INSTITUTION_VERKEY = System.getenv("VCX_INSTITUTION_VERKEY");
-		if (E_VCX_INSTITUTION_VERKEY == null) throw new RuntimeException("Variable VCX_INSTITUTION_VERKEY not set.");
-		VCX_INSTITUTION_VERKEY = E_VCX_INSTITUTION_VERKEY;
-		if (logger.isInfoEnabled()) logger.info("VCX_INSTITUTION_VERKEY: " + VCX_INSTITUTION_VERKEY);
 
 		String E_VCX_CREDENTIAL_NAME = System.getenv("VCX_CREDENTIAL_NAME");
 		if (E_VCX_CREDENTIAL_NAME == null) throw new RuntimeException("Variable VCX_CREDENTIAL_NAME not set.");
@@ -90,16 +99,25 @@ public class VcxConfiguration {
 		if (E_VCX_CREDDEF_ID != null && E_VCX_CREDDEF_ID.trim().isEmpty()) E_VCX_CREDDEF_ID = null;
 		VCX_CREDDEF_ID = E_VCX_CREDDEF_ID;
 		if (logger.isInfoEnabled()) logger.info("VCX_CREDDEF_ID: " + VCX_CREDDEF_ID);
+
+		try {
+
+			jsonObjectVcxConfig = new JSONObject(IOUtils.toString(new InputStreamReader(new FileInputStream(new File("/opt/sovrin/vcxconfig.json")), StandardCharsets.UTF_8)));
+			if (logger.isInfoEnabled()) logger.info("jsonObjectVcxConfig: " + jsonObjectVcxConfig.toString());
+		} catch (Exception ex) {
+
+			throw new RuntimeException(ex.getMessage(), ex);
+		}
 	}
 
 	static List<CULedgerKeyPair> makeCULedgerKeyPairs() {
 
 		List<CULedgerKeyPair> c = new ArrayList<CULedgerKeyPair> ();
 
+		c.add(makeCULedgerKeyPair("VCX_INSTITUTION_DID_SEED", VCX_INSTITUTION_DID_SEED));
+		c.add(makeCULedgerKeyPair("VCX_GENESIS_PATH", VCX_GENESIS_PATH));
 		c.add(makeCULedgerKeyPair("VCX_INSTITUTION_LOGO_URL", VCX_INSTITUTION_LOGO_URL));
 		c.add(makeCULedgerKeyPair("VCX_INSTITUTION_NAME", VCX_INSTITUTION_NAME));
-		c.add(makeCULedgerKeyPair("VCX_INSTITUTION_DID", VCX_INSTITUTION_DID));
-		c.add(makeCULedgerKeyPair("VCX_INSTITUTION_VERKEY", VCX_INSTITUTION_VERKEY));
 		c.add(makeCULedgerKeyPair("VCX_CREDENTIAL_NAME", VCX_CREDENTIAL_NAME));
 		c.add(makeCULedgerKeyPair("VCX_CREDENTIAL_VALUE", VCX_CREDENTIAL_VALUE));
 		c.add(makeCULedgerKeyPair("VCX_TIMEOUT_CONNECTIONINVITE", "" + VCX_TIMEOUT_CONNECTIONINVITE));
@@ -112,6 +130,15 @@ public class VcxConfiguration {
 		c.add(makeCULedgerKeyPair("schemaId", VcxInit.schemaId));
 		c.add(makeCULedgerKeyPair("credDefId", VcxInit.credDefId));
 		c.add(makeCULedgerKeyPair("schemaSeqNo", "" + VcxInit.schemaSeqNo));
+
+		Iterator<?> i = jsonObjectVcxConfig.keys();
+		while (i.hasNext()) {
+
+			String key = (String) i.next();
+			String value = jsonObjectVcxConfig.optString(key);
+
+			c.add(makeCULedgerKeyPair("VCX_CONFIG_" + key, value));
+		}
 
 		return c;
 	}

@@ -131,7 +131,7 @@ public class VcxInit {
 
 		if (schemaId == null) return null;
 
-		String submitterDid = VcxConfiguration.VCX_INSTITUTION_DID;
+		String submitterDid = VcxConfiguration.jsonObjectVcxConfig.optString("institution_did");
 
 		String getSchemaRequestJson = Ledger.buildGetSchemaRequest(submitterDid, schemaId).get();
 		if (logger.isInfoEnabled()) logger.info("getSchemaRequestJson: " + getSchemaRequestJson);
@@ -145,7 +145,7 @@ public class VcxInit {
 
 		if (credDefId == null) return null;
 
-		String submitterDid = VcxConfiguration.VCX_INSTITUTION_DID;
+		String submitterDid = VcxConfiguration.jsonObjectVcxConfig.optString("institution_did");
 
 		String getCredDefRequestJson = Ledger.buildGetCredDefRequest(submitterDid, credDefId).get();
 		if (logger.isInfoEnabled()) logger.info("getCredDefRequestJson: " + getCredDefRequestJson);
@@ -157,7 +157,7 @@ public class VcxInit {
 
 	private static String initCreateSchema() throws InterruptedException, ExecutionException, VcxException {
 
-		String sourceId = VcxConfiguration.VCX_INSTITUTION_DID;
+		String sourceId = VcxConfiguration.jsonObjectVcxConfig.optString("institution_did");
 		String schemaName = schemaNameFromSchemaData(SCHEMA_DATA);
 		String version = schemaVersionFromSchemaData(SCHEMA_DATA);
 		String schemaData = SCHEMA_DATA;
@@ -173,8 +173,8 @@ public class VcxInit {
 
 	private static String initCreateCredDef() throws InterruptedException, ExecutionException, VcxException {
 
-		String sourceId = VcxConfiguration.VCX_INSTITUTION_DID;
-		String issuerId = VcxConfiguration.VCX_INSTITUTION_DID;
+		String sourceId = VcxConfiguration.jsonObjectVcxConfig.optString("institution_did");
+		String issuerId = VcxConfiguration.jsonObjectVcxConfig.optString("institution_did");
 		String credDefName = credDefName();
 		String credDefTag = credDefTag();
 		String config = "{\"support_revocation\":false}";

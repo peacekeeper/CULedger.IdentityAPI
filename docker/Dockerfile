@@ -1,10 +1,10 @@
 FROM ubuntu:18.04
 MAINTAINER Markus Sabadello <markus@danubetech.com>
 
+ARG VCX_INSTITUTION_DID_SEED="wuuw3iuchai3Bou0fae3voh3Iequeuwu"
+ARG VCX_GENESIS_PATH="pool_transactions_sandbox_genesis"
 ARG VCX_INSTITUTION_LOGO_URL="https://culedger.s3.amazonaws.com/Connect.Me/CULedger-ConnectMe-Logo-256x256.png"
 ARG VCX_INSTITUTION_NAME="CULedger"
-ARG VCX_INSTITUTION_DID="SsPVi4HpA8jJx7wcTqCEQ4"
-ARG VCX_INSTITUTION_VERKEY="F6mDd1Govefw7XEa5mRJPRLsEKkgUbSsieEhtdSWVZac"
 ARG VCX_CREDENTIAL_NAME="myCUID"
 ARG VCX_CREDENTIAL_VALUE="Test CU"
 ARG VCX_TIMEOUT_CONNECTIONINVITE="600"
@@ -80,15 +80,10 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # configure
 
-RUN cd /opt/sovrin && sed -i "s,--vcx_institution_logo_url--,${VCX_INSTITUTION_LOGO_URL},g" ./vcxconfig.json
-RUN cd /opt/sovrin && sed -i "s,--vcx_institution_name--,${VCX_INSTITUTION_NAME},g" ./vcxconfig.json
-RUN cd /opt/sovrin && sed -i "s,--vcx_institution_did--,${VCX_INSTITUTION_DID},g" ./vcxconfig.json
-RUN cd /opt/sovrin && sed -i "s,--vcx_institution_verkey--,${VCX_INSTITUTION_VERKEY},g" ./vcxconfig.json
-
+ENV VCX_INSTITUTION_DID_SEED ${VCX_INSTITUTION_DID_SEED}
+ENV VCX_GENESIS_PATH ${VCX_GENESIS_PATH}
 ENV VCX_INSTITUTION_LOGO_URL ${VCX_INSTITUTION_LOGO_URL}
 ENV VCX_INSTITUTION_NAME ${VCX_INSTITUTION_NAME}
-ENV VCX_INSTITUTION_DID ${VCX_INSTITUTION_DID}
-ENV VCX_INSTITUTION_VERKEY ${VCX_INSTITUTION_VERKEY}
 ENV VCX_CREDENTIAL_NAME ${VCX_CREDENTIAL_NAME}
 ENV VCX_CREDENTIAL_VALUE ${VCX_CREDENTIAL_VALUE}
 ENV VCX_TIMEOUT_CONNECTIONINVITE ${VCX_TIMEOUT_CONNECTIONINVITE}
@@ -103,4 +98,5 @@ ENV VCX_CREDDEF_ID ${VCX_CREDDEF_ID}
 EXPOSE 8080
 
 RUN chmod a+rx /opt/culedger-identityapi/docker/run.sh
+RUN chmod a+rx /opt/culedger-identityapi/docker/provision.sh
 CMD "/opt/culedger-identityapi/docker/run.sh"

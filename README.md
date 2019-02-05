@@ -25,6 +25,14 @@ https://testflight.apple.com/join/ktV7uxc3
 
 The above command can optionally be modified to pass parameters into the build process:
 
+**Institution DID seed:**
+
+	--build-arg VCX_INSTITUTION_DID_SEED="wuuw3iuchai3Bou0fae3voh3Iequeuwu"
+
+**Genesis path:**
+
+	--build-arg VCX_GENESIS_PATH="pool_transactions_sandbox_genesis"
+
 **URL to the institution's logo:**
 
 	--build-arg VCX_INSTITUTION_LOGO_URL="https://culedger.s3.amazonaws.com/Connect.Me/CULedger-ConnectMe-Logo-256x256.png"
@@ -32,10 +40,6 @@ The above command can optionally be modified to pass parameters into the build p
 **Institution name:**
 
 	--build-arg VCX_INSTITUTION_NAME="CULedger"
-
-**Institution DID:**
-
-	--build-arg VCX_INSTITUTION_DID="SsPVi4HpA8jJx7wcTqCEQ4"
 
 **Credential name:**
 
