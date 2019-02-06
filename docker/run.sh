@@ -2,6 +2,10 @@
 
 export RUST_LOG=info
 
+if [ ! -z ${VCX_INSTITUTION_DID_SEED} ]; then
+	/opt/culedger-identityapi/docker/provision.sh
+fi
+
 cd /opt/sovrin/
 sed -i "s,\"genesis_path\": \"<CHANGE_ME>\",\"genesis_path\": \"/opt/sovrin/${VCX_GENESIS_PATH}\",g" ./vcxconfig.json
 sed -i "s,\"institution_logo_url\": \"<CHANGE_ME>\",\"institution_logo_url\": \"${VCX_INSTITUTION_LOGO_URL}\",g" ./vcxconfig.json

@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 MAINTAINER Markus Sabadello <markus@danubetech.com>
 
-ARG VCX_INSTITUTION_DID_SEED="wuuw3iuchai3Bou0fae3voh3Iequeuwu"
+ARG VCX_INSTITUTION_DID_SEED=""
 ARG VCX_GENESIS_PATH="pool_transactions_sandbox_genesis"
 ARG VCX_INSTITUTION_LOGO_URL="https://culedger.s3.amazonaws.com/Connect.Me/CULedger-ConnectMe-Logo-256x256.png"
 ARG VCX_INSTITUTION_NAME="CULedger"
