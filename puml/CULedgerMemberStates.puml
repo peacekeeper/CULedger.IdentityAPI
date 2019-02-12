@@ -1,0 +1,33 @@
+@startuml
+scale 600 width
+
+
+
+[*] --> NotEnrolled
+
+NotEnrolled --> Enrolling
+
+
+state Enrolling{
+  [*] --> connecting
+  connecting --> connected :success
+  connecting --> connectionFailed :failed
+  connecting --> connectionDenied :denied
+  connectionFailed --> enrolmentFailed
+  connectionDenied --> enrolmentFailed
+  connected --> credentialSent : build & send credential
+  credentialSent --> credentialReceived
+  credentialSent  --> enrolmentFailed : not received
+  credentialReceived --> credentialAccepted
+  credentialReceived --> credentialRejected : reject
+  credentialRejected --> enrolmentFailed : failed
+  credentialAccepted --> Enrolled
+  enrolmentFailed --> NotEnrolled
+}
+
+
+Enrolled --> [*]
+
+@enduml
+
+
