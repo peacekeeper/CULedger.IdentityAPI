@@ -14,7 +14,10 @@ Documentation:
 
 ## Connect.Me via TestFlight ##
 
-https://testflight.apple.com/join/ktV7uxc3
+* iOS: https://testflight.apple.com/join/ktV7uxc3
+* Android: https://drive.google.com/open?id=1oLMGJ5rVWRjzAkDbItZ_oDCpVGCwR9wC
+
+
 
 
 ## How to build
