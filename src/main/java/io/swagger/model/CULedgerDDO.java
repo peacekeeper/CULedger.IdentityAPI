@@ -13,8 +13,7 @@ import javax.validation.constraints.*;
  * CULedgerDDO
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-30T11:45:41.226Z[GMT]")
-
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-02-19T12:02:09.781Z[GMT]")
 public class CULedgerDDO   {
   @JsonProperty("DID")
   private String DID = null;
@@ -34,7 +33,6 @@ public class CULedgerDDO   {
   @ApiModelProperty(example = "SsPVi4HpA8jJx7wcTqCEQ3", required = true, value = "")
   @NotNull
 
-
   public String getDID() {
     return DID;
   }
@@ -53,7 +51,6 @@ public class CULedgerDDO   {
    * @return institutionPrivateKey
   **/
   @ApiModelProperty(example = "F6mDd1Govefw7XEa5mRJPRLsEKkgUbSsieEhtdSWVZac", value = "")
-
 
   public String getInstitutionPrivateKey() {
     return institutionPrivateKey;
@@ -104,4 +101,3 @@ public class CULedgerDDO   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

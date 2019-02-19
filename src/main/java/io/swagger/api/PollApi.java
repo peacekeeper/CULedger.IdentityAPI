@@ -22,15 +22,16 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-02-19T12:02:09.781Z[GMT]")
-@Api(value = "heartbeat", description = "the heartbeat API")
-public interface HeartbeatApi {
+@Api(value = "poll", description = "the poll API")
+public interface PollApi {
 
-    @ApiOperation(value = "gives developer information about the health of the system. [uses /agency hook for the Agency endpoint]", nickname = "getHeartbeat", notes = "", response = String.class, tags={  })
+    @ApiOperation(value = "polls the API for finished responses", nickname = "poll", notes = "", tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK | NotOK", response = String.class) })
-    @RequestMapping(value = "/heartbeat",
-        produces = { "application/json" }, 
+        @ApiResponse(code = 200, message = "job result"),
+        @ApiResponse(code = 204, message = "no result yet"),
+        @ApiResponse(code = 404, message = "job not found") })
+    @RequestMapping(value = "/poll",
         method = RequestMethod.GET)
-    ResponseEntity<String> getHeartbeat();
+    ResponseEntity<?> poll(@ApiParam(value = "Job we are waiting for to finish.",required=true) @PathVariable("jobId") String jobId);
 
 }

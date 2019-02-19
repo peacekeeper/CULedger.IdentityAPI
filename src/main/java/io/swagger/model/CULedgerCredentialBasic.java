@@ -13,8 +13,7 @@ import javax.validation.constraints.*;
  * CULedgerCredentialBasic
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-30T11:45:41.226Z[GMT]")
-
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-02-19T12:02:09.781Z[GMT]")
 public class CULedgerCredentialBasic   {
   @JsonProperty("id")
   private String id = null;
@@ -40,7 +39,6 @@ public class CULedgerCredentialBasic   {
   @ApiModelProperty(example = "UUID-GOES-HERE", required = true, value = "The unique identifier of this credential.")
   @NotNull
 
-
   public String getId() {
     return id;
   }
@@ -61,7 +59,6 @@ public class CULedgerCredentialBasic   {
   @ApiModelProperty(example = "CULedger Credit Union", required = true, value = "Name of the institution that issued the credential.")
   @NotNull
 
-
   public String getInstitution() {
     return institution;
   }
@@ -81,7 +78,6 @@ public class CULedgerCredentialBasic   {
   **/
   @ApiModelProperty(example = "1234", value = "MemberId in the FIs system (often called Member Number), stored as string for flexibility.")
 
-
   public String getMemberNumber() {
     return memberNumber;
   }
@@ -100,7 +96,6 @@ public class CULedgerCredentialBasic   {
    * @return memberSince
   **/
   @ApiModelProperty(example = "DEC 2012", value = "")
-
 
   public String getMemberSince() {
     return memberSince;
@@ -155,4 +150,3 @@ public class CULedgerCredentialBasic   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

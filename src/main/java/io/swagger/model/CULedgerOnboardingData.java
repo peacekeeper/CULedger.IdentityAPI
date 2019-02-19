@@ -14,8 +14,7 @@ import javax.validation.constraints.*;
  * CULedgerOnboardingData
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-30T11:45:41.226Z[GMT]")
-
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-02-19T12:02:09.781Z[GMT]")
 public class CULedgerOnboardingData   {
   @JsonProperty("memberId")
   private String memberId = null;
@@ -44,7 +43,6 @@ public class CULedgerOnboardingData   {
   @ApiModelProperty(example = "lllll-ddddd--ddddd--sssss", required = true, value = "")
   @NotNull
 
-
   public String getMemberId() {
     return memberId;
   }
@@ -63,7 +61,6 @@ public class CULedgerOnboardingData   {
    * @return memberPhoneNumber
   **/
   @ApiModelProperty(example = "6135551212", value = "used internally, not part of Credential")
-
 
   public String getMemberPhoneNumber() {
     return memberPhoneNumber;
@@ -84,7 +81,6 @@ public class CULedgerOnboardingData   {
   **/
   @ApiModelProperty(example = "bubba@thecu.com", value = "used internally, not part of Credential")
 
-
   public String getMemberEmail() {
     return memberEmail;
   }
@@ -103,7 +99,6 @@ public class CULedgerOnboardingData   {
    * @return displayTextFromFI
   **/
   @ApiModelProperty(example = "New Loans and Accounts: 602-555-1212 Service: 603-555-1212 Routing # 123456789", value = "")
-
 
   public String getDisplayTextFromFI() {
     return displayTextFromFI;
@@ -125,7 +120,6 @@ public class CULedgerOnboardingData   {
   @ApiModelProperty(value = "")
 
   @Valid
-
   public CULedgerCredentialBasic getCredentialData() {
     return credentialData;
   }
@@ -181,4 +175,3 @@ public class CULedgerOnboardingData   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

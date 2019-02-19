@@ -1,6 +1,6 @@
 package io.swagger.api;
 
-import io.swagger.model.CULedgerKeyPair;
+import com.culedger.identity.VcxApiPoll;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -23,33 +23,22 @@ import java.util.List;
 import java.util.Map;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-02-19T12:02:09.781Z[GMT]")
 @Controller
-public class ConfigApiController implements ConfigApi {
+public class PollApiController implements PollApi {
 
-    private static final Logger log = LoggerFactory.getLogger(ConfigApiController.class);
+    private static final Logger log = LoggerFactory.getLogger(PollApiController.class);
 
     private final ObjectMapper objectMapper;
 
     private final HttpServletRequest request;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public ConfigApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public PollApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
     }
 
-    public ResponseEntity<String> getConfigValue(@ApiParam(value = "valueName in valueName/value keypair",required=true) @PathVariable("valueName") String valueName) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    public ResponseEntity<List<CULedgerKeyPair>> listConfigSettings() {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<List<CULedgerKeyPair>>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    public ResponseEntity<String> setConfigValue(@ApiParam(value = "" ,required=true )  @Valid @RequestBody String body,@ApiParam(value = "valueName in valueName/value keypair",required=true) @PathVariable("valueName") String valueName) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<?> poll(@ApiParam(value = "Job we are waiting for to finish.",required=true) @PathVariable("jobId") String jobId) {
+    	return VcxApiPoll.poll(jobId);
     }
 
 }

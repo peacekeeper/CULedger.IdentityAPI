@@ -10,53 +10,31 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * CULedgerKeyPair
+ * CULedgerBackgroundJob
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-02-19T12:02:09.781Z[GMT]")
-public class CULedgerKeyPair   {
-  @JsonProperty("valueName")
-  private String valueName = null;
+public class CULedgerBackgroundJob   {
+  @JsonProperty("jobId")
+  private String jobId = null;
 
-  @JsonProperty("value")
-  private String value = null;
-
-  public CULedgerKeyPair valueName(String valueName) {
-    this.valueName = valueName;
+  public CULedgerBackgroundJob jobId(String jobId) {
+    this.jobId = jobId;
     return this;
   }
 
   /**
-   * Get valueName
-   * @return valueName
+   * Get jobId
+   * @return jobId
   **/
   @ApiModelProperty(value = "")
 
-  public String getValueName() {
-    return valueName;
+  public String getJobId() {
+    return jobId;
   }
 
-  public void setValueName(String valueName) {
-    this.valueName = valueName;
-  }
-
-  public CULedgerKeyPair value(String value) {
-    this.value = value;
-    return this;
-  }
-
-  /**
-   * Get value
-   * @return value
-  **/
-  @ApiModelProperty(value = "")
-
-  public String getValue() {
-    return value;
-  }
-
-  public void setValue(String value) {
-    this.value = value;
+  public void setJobId(String jobId) {
+    this.jobId = jobId;
   }
 
 
@@ -68,23 +46,21 @@ public class CULedgerKeyPair   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CULedgerKeyPair cuLedgerKeyPair = (CULedgerKeyPair) o;
-    return Objects.equals(this.valueName, cuLedgerKeyPair.valueName) &&
-        Objects.equals(this.value, cuLedgerKeyPair.value);
+    CULedgerBackgroundJob cuLedgerBackgroundJob = (CULedgerBackgroundJob) o;
+    return Objects.equals(this.jobId, cuLedgerBackgroundJob.jobId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(valueName, value);
+    return Objects.hash(jobId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CULedgerKeyPair {\n");
+    sb.append("class CULedgerBackgroundJob {\n");
     
-    sb.append("    valueName: ").append(toIndentedString(valueName)).append("\n");
-    sb.append("    value: ").append(toIndentedString(value)).append("\n");
+    sb.append("    jobId: ").append(toIndentedString(jobId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

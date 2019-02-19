@@ -14,8 +14,7 @@ import javax.validation.constraints.*;
  * CULedgerMessage
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-30T11:45:41.226Z[GMT]")
-
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-02-19T12:02:09.781Z[GMT]")
 public class CULedgerMessage   {
   @JsonProperty("messageId")
   private String messageId = null;
@@ -67,7 +66,6 @@ public class CULedgerMessage   {
       return null;
     }
   }
-
   @JsonProperty("messageSigningType")
   private MessageSigningTypeEnum messageSigningType = null;
 
@@ -85,7 +83,6 @@ public class CULedgerMessage   {
   **/
   @ApiModelProperty(example = "31505c9f-db87-407f-9bfa-d42b0552e79a", required = true, value = "identifier for message (generated outside of system)")
   @NotNull
-
 
   public String getMessageId() {
     return messageId;
@@ -107,7 +104,6 @@ public class CULedgerMessage   {
   @ApiModelProperty(example = "lllll-ddddd--ddddd--sssss", required = true, value = "")
   @NotNull
 
-
   public String getMemberId() {
     return memberId;
   }
@@ -128,7 +124,6 @@ public class CULedgerMessage   {
   @ApiModelProperty(example = "A wire transfer has been queued for your acceptance. Can you please confirm the following details: $10,738 to be wired today to Bubba Ltd. in Spokane, WA.", required = true, value = "message that will be displayed to the user. (multi-line text)")
   @NotNull
 
-
   public String getMessageText() {
     return messageText;
   }
@@ -147,7 +142,6 @@ public class CULedgerMessage   {
    * @return messageInstructions
   **/
   @ApiModelProperty(value = "We need you Confirm or Deny the following request while you are speaking to Susan from the credit union. To Confirm, please press the Confirm button.")
-
 
   public String getMessageInstructions() {
     return messageInstructions;
@@ -168,7 +162,6 @@ public class CULedgerMessage   {
   **/
   @ApiModelProperty(example = "Approve", value = "The text that shows to a user when they want to take the POSITIVE action (accept / yes / approve). DECISION needed here - this gets into multi-lingual and cultural issues that may be best handled in Connect.Me?")
 
-
   public String getPositiveButtonText() {
     return positiveButtonText;
   }
@@ -187,7 +180,6 @@ public class CULedgerMessage   {
    * @return negativeButtonText
   **/
   @ApiModelProperty(example = "Deny", value = "The text that shows to a user when they want to take the NEGATIVE action (cancel / no / deny). DECISION needed here - this gets into multi-lingual and cultural issues that may be best handled in Connect.Me?")
-
 
   public String getNegativeButtonText() {
     return negativeButtonText;
@@ -208,7 +200,6 @@ public class CULedgerMessage   {
   **/
   @ApiModelProperty(value = "Defines the types of signatures allowed:   1. none;   2. simple button press;   3. Biometric (e.g. Apple Touch ID, Apple Face ID, fingerprint ) ")
 
-
   public MessageSigningTypeEnum getMessageSigningType() {
     return messageSigningType;
   }
@@ -227,7 +218,6 @@ public class CULedgerMessage   {
    * @return messageSigningPayload
   **/
   @ApiModelProperty(example = "msgid:31505c9f-db87-407f-9bfa-d42b0552e79a;msgSHA512: C793530778F173A958BBF8D12273F43567AEE997A49384C3F82A616314833E586CD69EA92501574E285CC71DCC665DC623717353023CD4B1CA3D159A5ACF296A;type:termsconditionsupdate;dateSent:2018-11-08-05:01", value = "data that will be signed.")
-
 
   public String getMessageSigningPayload() {
     return messageSigningPayload;
@@ -290,4 +280,3 @@ public class CULedgerMessage   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

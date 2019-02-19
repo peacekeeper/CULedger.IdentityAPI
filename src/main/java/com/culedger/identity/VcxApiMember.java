@@ -1,6 +1,7 @@
 package com.culedger.identity;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import com.evernym.sdk.vcx.issuer.IssuerApi;
 import com.evernym.sdk.vcx.proof.GetProofResult;
 import com.evernym.sdk.vcx.proof.ProofApi;
 
+import io.swagger.model.CULedgerBackgroundJob;
 import io.swagger.model.CULedgerKeyPair;
 import io.swagger.model.CULedgerMember;
 import io.swagger.model.CULedgerOnboardingData;
@@ -23,35 +25,57 @@ public class VcxApiMember extends VcxApi {
 
 	private static final Logger logger = LoggerFactory.getLogger(VcxApiMember.class);
 
-	public static ResponseEntity<CULedgerOnboardingData> memberOnBoard(CULedgerOnboardingData cuLedgerOnboardingData, String memberId) {
+	public static ResponseEntity<?> memberOnBoard(CULedgerOnboardingData cuLedgerOnboardingData, String memberId, String prefer) {
 
-		try {
+		Supplier<ResponseEntity<CULedgerOnboardingData>> supplier = new Supplier<ResponseEntity<CULedgerOnboardingData>>() {
 
-			// create connection
+			public ResponseEntity<CULedgerOnboardingData> get() {
 
-			Integer connectionHandle = createConnection(memberId, cuLedgerOnboardingData);
+				try {
 
-			// write to member DID mapper
+					// create connection
 
-			VcxApi.memberDidMapper.add(memberId, connectionHandle);
-			if (logger.isInfoEnabled()) logger.info("Added member ID " + memberId + " with connection handle " + connectionHandle);
+					Integer connectionHandle = createConnection(memberId, cuLedgerOnboardingData);
 
-			// create credential
+					// write to member DID mapper
 
-			createCredential(memberId, connectionHandle);
+					VcxApi.memberDidMapper.add(memberId, connectionHandle);
+					if (logger.isInfoEnabled()) logger.info("Added member ID " + memberId + " with connection handle " + connectionHandle);
 
-			// done
+					// create credential
 
-			CULedgerOnboardingData cuLedgerOnboardingDataResponse = cuLedgerOnboardingData;
-			return new ResponseEntity<CULedgerOnboardingData>(cuLedgerOnboardingDataResponse, HttpStatus.OK);
-		} catch (Exception ex) {
+					createCredential(memberId, connectionHandle);
 
-			if (logger.isErrorEnabled()) logger.error(ex.getMessage(), ex);
-			return new ResponseEntity<CULedgerOnboardingData>(HttpStatus.INTERNAL_SERVER_ERROR);
+					// done
+
+					CULedgerOnboardingData cuLedgerOnboardingDataResponse = cuLedgerOnboardingData;
+					return new ResponseEntity<CULedgerOnboardingData>(cuLedgerOnboardingDataResponse, HttpStatus.OK);
+				} catch (Exception ex) {
+
+					if (logger.isErrorEnabled()) logger.error(ex.getMessage(), ex);
+					return new ResponseEntity<CULedgerOnboardingData>(HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+			}
+		};
+
+		if ("respond-async".equals(prefer)) {
+
+			String jobId = VcxApiPoll.submit(supplier);
+
+			return new ResponseEntity<CULedgerBackgroundJob>(new CULedgerBackgroundJob().jobId(jobId), HttpStatus.ACCEPTED);
+		} else {
+
+			try {
+
+				return supplier.get();
+			} catch (Exception ex) {
+
+				return new ResponseEntity<CULedgerOnboardingData>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		}
 	}
 
-	public static ResponseEntity<String> memberSendCredential(String memberId) {
+	public static ResponseEntity<String> memberSendCredential(String memberId, String prefer) {
 
 		try {
 
@@ -76,7 +100,7 @@ public class VcxApiMember extends VcxApi {
 		}
 	}
 
-	public static ResponseEntity<CULedgerMember> memberAuthenticate(String memberId) {
+	public static ResponseEntity<CULedgerMember> memberAuthenticate(String memberId, String prefer) {
 
 		try {
 
@@ -148,17 +172,17 @@ public class VcxApiMember extends VcxApi {
 		}
 	}
 
-    public static ResponseEntity<List<CULedgerKeyPair>> listConfigSettings() {
+	public static ResponseEntity<List<CULedgerKeyPair>> listConfigSettings() {
 
-    	List<CULedgerKeyPair> configSettings = VcxConfiguration.makeCULedgerKeyPairs();
+		List<CULedgerKeyPair> configSettings = VcxConfiguration.makeCULedgerKeyPairs();
 
-    	return new ResponseEntity<List<CULedgerKeyPair>>(configSettings, HttpStatus.OK);
-    }
+		return new ResponseEntity<List<CULedgerKeyPair>>(configSettings, HttpStatus.OK);
+	}
 
 	/*
 	 * Helper methods
 	 */
-    
+
 	private static Integer createConnection(String sourceId, CULedgerOnboardingData cuLedgerOnboardingData) throws InterruptedException, ExecutionException, VcxException, ParseException {
 
 		// create connection

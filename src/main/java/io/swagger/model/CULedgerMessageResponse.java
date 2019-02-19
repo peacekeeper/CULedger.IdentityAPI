@@ -14,8 +14,7 @@ import javax.validation.constraints.*;
  * CULedgerMessageResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-30T11:45:41.226Z[GMT]")
-
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-02-19T12:02:09.781Z[GMT]")
 public class CULedgerMessageResponse   {
   @JsonProperty("messageId")
   private String messageId = null;
@@ -54,7 +53,6 @@ public class CULedgerMessageResponse   {
       return null;
     }
   }
-
   @JsonProperty("status")
   private StatusEnum status = null;
 
@@ -79,7 +77,6 @@ public class CULedgerMessageResponse   {
   @ApiModelProperty(example = "31505c9f-db87-407f-9bfa-d42b0552e79a", required = true, value = "identifier for message (generated outside of system)")
   @NotNull
 
-
   public String getMessageId() {
     return messageId;
   }
@@ -98,7 +95,6 @@ public class CULedgerMessageResponse   {
    * @return status
   **/
   @ApiModelProperty(value = "indicates the message state.")
-
 
   public StatusEnum getStatus() {
     return status;
@@ -119,7 +115,6 @@ public class CULedgerMessageResponse   {
   **/
   @ApiModelProperty(example = "msgid:31505c9f-db87-407f-9bfa-d42b0552e79a;msgSHA512: C793530778F173A958BBF8D12273F43567AEE997A49384C3F82A616314833E586CD69EA92501574E285CC71DCC665DC623717353023CD4B1CA3D159A5ACF296A;type:termsconditionsupdate;dateSent:2018-11-08-05:01", value = "data that was signed.")
 
-
   public String getSignedPayload() {
     return signedPayload;
   }
@@ -139,7 +134,6 @@ public class CULedgerMessageResponse   {
   **/
   @ApiModelProperty(example = "6E873585E7F889EEE8AC069A82335F16582CA462243D40F8A6163B3D4E56DD9857D34350955FC1973E5A35C9239E43FC7BF7CBEA4C0316136FE193CAB8A74B1F", value = "digital signature of the message as received from Member.")
 
-
   public String getSignature() {
     return signature;
   }
@@ -158,7 +152,6 @@ public class CULedgerMessageResponse   {
    * @return textResponse
   **/
   @ApiModelProperty(example = "DENIED - I don't know abou this transaction.", value = "text typed in by person in response to request. optional.")
-
 
   public String getTextResponse() {
     return textResponse;
@@ -215,4 +208,3 @@ public class CULedgerMessageResponse   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-
