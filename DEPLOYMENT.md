@@ -45,6 +45,10 @@ $ sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 Once you have docker installed
 
+Clone the repository
+
+
+
 BUILD: 
 
 docker build -f ./docker/Dockerfile . -t culedger-identityapi --build-arg VCX_INSTITUTION_LOGO_URL="https://culedger.s3.amazonaws.com/Connect.Me/CULedger-ConnectMe-Logo-256x256.png" --build-arg VCX_INSTITUTION_NAME="CULedger" --build-arg VCX_CREDENTIAL_NAME="MyCUID" 
