@@ -73,6 +73,12 @@ The above command can optionally be modified to pass parameters into the build p
 
 	docker run -ti -p 8080:8080 -e VCX_SCHEMA_ID=SsPVi4HpA8jJx7wcTqCEQ4:2:mycuid-315957:0.0.1 -e VCX_CREDDEF_ID=SsPVi4HpA8jJx7wcTqCEQ4:3:CL:30062:tag-461289 culedger-identityapi:latest
 
+## How to run multiple containers on the same host machine
+
+1. Make sure containers are mapped to different ports on the host machine (i.e. `-p 8080:8080`, `-p 8081:8080`, `-p 8082:8080`, etc.).
+
+2. If using persistent volumes, make sure containers use different volumes (i.e. `-v culedger-identityapi-state1:/opt/culedger-identityapi-state`, `-v culedger-identityapi-state2:/opt/culedger-identityapi-state`, `-v culedger-identityapi-state3:/opt/culedger-identityapi-state`).
+
 ## How to test via Swagger UI
 
 Open `http://localhost:8080/darrellodonnell/CULedger.Identity/0.1.0/swagger-ui.html` in your local web browser.
