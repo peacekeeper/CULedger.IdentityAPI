@@ -1,0 +1,38 @@
+@startuml
+
+class "CULedgerIdentityAPI" {
+  {method} Onboard(...)
+  {method} Authenticate(...)
+}
+
+
+class "CULedger.Onboarding.Data" {
+  string memberId
+  string phoneNumber
+  string emailAddress
+  string displayTextFromFI
+  Object CredentialData
+}
+
+class "CULedger.Credential.MyCUID.Basic" {
+  string CredentialId
+  string Institution
+  string Credential
+  string MemberNumber
+  string MemberSince
+}
+
+
+
+
+note bottom of "CULedgerIdentityAPI"
+ STATUS:
+  Early document - disregard.
+ DECISIONS:
+ _ Will we store copies of Credentials? only TEMPORARILY
+ X Will external apps need to create credential? NO
+end note
+
+
+
+@enduml
