@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * CULedgerMessageResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-02-19T12:02:09.781Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-03-01T11:48:59.751Z[GMT]")
 public class CULedgerMessageResponse   {
   @JsonProperty("messageId")
   private String messageId = null;

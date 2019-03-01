@@ -1,6 +1,5 @@
 package io.swagger.api;
 
-import com.culedger.identity.VcxApiPoll;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -21,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-02-19T12:02:09.781Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-03-01T11:48:59.751Z[GMT]")
 @Controller
 public class PollApiController implements PollApi {
 
@@ -37,8 +36,9 @@ public class PollApiController implements PollApi {
         this.request = request;
     }
 
-    public ResponseEntity<?> poll(@ApiParam(value = "Job we are waiting for to finish.",required=true) @PathVariable("jobId") String jobId) {
-    	return VcxApiPoll.poll(jobId);
+    public ResponseEntity<Void> poll(@ApiParam(value = "Job we are waiting for to finish.",required=true) @PathVariable("jobId") String jobId) {
+        String accept = request.getHeader("Accept");
+        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 }

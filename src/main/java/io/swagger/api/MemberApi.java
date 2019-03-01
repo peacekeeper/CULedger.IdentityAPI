@@ -26,7 +26,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-02-19T12:02:09.781Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-03-01T11:48:59.751Z[GMT]")
 @Api(value = "member", description = "the member API")
 public interface MemberApi {
 
@@ -71,13 +71,13 @@ public interface MemberApi {
     @ApiOperation(value = "Connects to Member and sends Credential to them.", nickname = "memberOnboard", notes = "At low level connects to Member (via private-DID-pair) and sends their Credential.", response = CULedgerOnboardingData.class, tags={  })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "search results matching criteria", response = CULedgerOnboardingData.class),
-        @ApiResponse(code = 202, message = "job is in progress", response = CULedgerBackgroundJob.class),
+        @ApiResponse(code = 202, message = "job is in progress"),
         @ApiResponse(code = 400, message = "bad input parameter") })
     @RequestMapping(value = "/member/{memberId}/onboard",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<?> memberOnboard(@ApiParam(value = "" ,required=true )  @Valid @RequestBody CULedgerOnboardingData body,@ApiParam(value = "Member (identitified by memberID) that we are onboarding.",required=true) @PathVariable("memberId") String memberId,@ApiParam(value = "" ) @RequestHeader(value="Prefer", required=false) String prefer);
+    ResponseEntity<CULedgerOnboardingData> memberOnboard(@ApiParam(value = "" ,required=true )  @Valid @RequestBody CULedgerOnboardingData body,@ApiParam(value = "Member (identitified by memberID) that we are onboarding.",required=true) @PathVariable("memberId") String memberId,@ApiParam(value = "" ) @RequestHeader(value="Prefer", required=false) String prefer);
 
 
     @ApiOperation(value = "Makes initial connection to the member", nickname = "memberSendCredential", notes = "Sends credential to Member", response = String.class, tags={  })

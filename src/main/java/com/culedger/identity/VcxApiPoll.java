@@ -19,7 +19,7 @@ public class VcxApiPoll extends VcxApi {
 
 	public static ResponseEntity<?> poll(String jobId) {
 
-		return results.get(jobId);
+		return results.remove(jobId);
 	}
 
 	static <T extends ResponseEntity<?>> String submit(Supplier<T> supplier) {

@@ -21,7 +21,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-02-19T12:02:09.781Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-03-01T11:48:59.751Z[GMT]")
 @Api(value = "poll", description = "the poll API")
 public interface PollApi {
 
@@ -32,6 +32,6 @@ public interface PollApi {
         @ApiResponse(code = 404, message = "job not found") })
     @RequestMapping(value = "/poll",
         method = RequestMethod.GET)
-    ResponseEntity<?> poll(@ApiParam(value = "Job we are waiting for to finish.",required=true) @PathVariable("jobId") String jobId);
+    ResponseEntity<Void> poll(@ApiParam(value = "Job we are waiting for to finish.",required=true) @PathVariable("jobId") String jobId);
 
 }

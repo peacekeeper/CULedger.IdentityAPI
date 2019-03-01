@@ -1,10 +1,12 @@
 package com.culedger.identity;
+import java.net.URI;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -14,7 +16,6 @@ import com.evernym.sdk.vcx.issuer.IssuerApi;
 import com.evernym.sdk.vcx.proof.GetProofResult;
 import com.evernym.sdk.vcx.proof.ProofApi;
 
-import io.swagger.model.CULedgerBackgroundJob;
 import io.swagger.model.CULedgerKeyPair;
 import io.swagger.model.CULedgerMember;
 import io.swagger.model.CULedgerOnboardingData;
@@ -25,36 +26,33 @@ public class VcxApiMember extends VcxApi {
 
 	private static final Logger logger = LoggerFactory.getLogger(VcxApiMember.class);
 
-	public static ResponseEntity<?> memberOnBoard(CULedgerOnboardingData cuLedgerOnboardingData, String memberId, String prefer) {
+	public static ResponseEntity<CULedgerOnboardingData> memberOnBoard(CULedgerOnboardingData cuLedgerOnboardingData, String memberId, String prefer) {
 
-		Supplier<ResponseEntity<CULedgerOnboardingData>> supplier = new Supplier<ResponseEntity<CULedgerOnboardingData>>() {
+		Supplier<ResponseEntity<CULedgerOnboardingData>> supplier = () -> {
 
-			public ResponseEntity<CULedgerOnboardingData> get() {
+			try {
 
-				try {
+				// create connection
 
-					// create connection
+				Integer connectionHandle = createConnection(memberId, cuLedgerOnboardingData);
 
-					Integer connectionHandle = createConnection(memberId, cuLedgerOnboardingData);
+				// write to member DID mapper
 
-					// write to member DID mapper
+				VcxApi.memberDidMapper.add(memberId, connectionHandle);
+				if (logger.isInfoEnabled()) logger.info("Added member ID " + memberId + " with connection handle " + connectionHandle);
 
-					VcxApi.memberDidMapper.add(memberId, connectionHandle);
-					if (logger.isInfoEnabled()) logger.info("Added member ID " + memberId + " with connection handle " + connectionHandle);
+				// create credential
 
-					// create credential
+				createCredential(memberId, connectionHandle);
 
-					createCredential(memberId, connectionHandle);
+				// done
 
-					// done
+				CULedgerOnboardingData cuLedgerOnboardingDataResponse = cuLedgerOnboardingData;
+				return new ResponseEntity<CULedgerOnboardingData>(cuLedgerOnboardingDataResponse, HttpStatus.OK);
+			} catch (Exception ex) {
 
-					CULedgerOnboardingData cuLedgerOnboardingDataResponse = cuLedgerOnboardingData;
-					return new ResponseEntity<CULedgerOnboardingData>(cuLedgerOnboardingDataResponse, HttpStatus.OK);
-				} catch (Exception ex) {
-
-					if (logger.isErrorEnabled()) logger.error(ex.getMessage(), ex);
-					return new ResponseEntity<CULedgerOnboardingData>(HttpStatus.INTERNAL_SERVER_ERROR);
-				}
+				if (logger.isErrorEnabled()) logger.error(ex.getMessage(), ex);
+				return new ResponseEntity<CULedgerOnboardingData>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		};
 
@@ -62,16 +60,53 @@ public class VcxApiMember extends VcxApi {
 
 			String jobId = VcxApiPoll.submit(supplier);
 
-			return new ResponseEntity<CULedgerBackgroundJob>(new CULedgerBackgroundJob().jobId(jobId), HttpStatus.ACCEPTED);
+			HttpHeaders headers = new HttpHeaders();
+			headers.setLocation(URI.create("/darrellodonnell/CULedger.Identity/0.1.0/poll/" + jobId));
+			ResponseEntity<CULedgerOnboardingData> r = new ResponseEntity<CULedgerOnboardingData>(headers, HttpStatus.ACCEPTED);
+			return r;
 		} else {
+
+			try { return supplier.get(); } catch (Exception ex) { return new ResponseEntity<CULedgerOnboardingData>(HttpStatus.INTERNAL_SERVER_ERROR); }
+		}
+	}
+
+	public static ResponseEntity<CULedgerOnboardingData> memberConnect(CULedgerOnboardingData cuLedgerOnboardingData, String memberId, String prefer) {
+
+		Supplier<ResponseEntity<CULedgerOnboardingData>> supplier = () -> {
 
 			try {
 
-				return supplier.get();
+				// create connection
+
+				Integer connectionHandle = createConnection(memberId, cuLedgerOnboardingData);
+
+				// write to member DID mapper
+
+				VcxApi.memberDidMapper.add(memberId, connectionHandle);
+				if (logger.isInfoEnabled()) logger.info("Added member ID " + memberId + " with connection handle " + connectionHandle);
+
+				// done
+
+				CULedgerOnboardingData cuLedgerOnboardingDataResponse = cuLedgerOnboardingData;
+				return new ResponseEntity<CULedgerOnboardingData>(cuLedgerOnboardingDataResponse, HttpStatus.OK);
 			} catch (Exception ex) {
 
+				if (logger.isErrorEnabled()) logger.error(ex.getMessage(), ex);
 				return new ResponseEntity<CULedgerOnboardingData>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
+		};
+
+		if ("respond-async".equals(prefer)) {
+
+			String jobId = VcxApiPoll.submit(supplier);
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setLocation(URI.create("/darrellodonnell/CULedger.Identity/0.1.0/poll/" + jobId));
+			ResponseEntity<CULedgerOnboardingData> r = new ResponseEntity<CULedgerOnboardingData>(headers, HttpStatus.ACCEPTED);
+			return r;
+		} else {
+
+			try { return supplier.get(); } catch (Exception ex) { return new ResponseEntity<CULedgerOnboardingData>(HttpStatus.INTERNAL_SERVER_ERROR); }
 		}
 	}
 
