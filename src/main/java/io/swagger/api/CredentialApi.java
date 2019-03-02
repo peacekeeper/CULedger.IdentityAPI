@@ -5,7 +5,7 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.CULedgerCredentialBasic;
+import io.swagger.model.CULedgerCredentialMyCUIDBasic;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +22,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-03-01T11:48:59.751Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-03-02T19:50:39.116Z[GMT]")
 @Api(value = "credential", description = "the credential API")
 public interface CredentialApi {
 
@@ -34,7 +34,7 @@ public interface CredentialApi {
     @RequestMapping(value = "/credential",
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> createCredential(@ApiParam(value = ""  )  @Valid @RequestBody CULedgerCredentialBasic body);
+    ResponseEntity<Void> createCredential(@ApiParam(value = ""  )  @Valid @RequestBody CULedgerCredentialMyCUIDBasic body);
 
 
     @ApiOperation(value = "returns Credential that matches input id.", nickname = "getCredential", notes = "...", response = String.class, tags={  })

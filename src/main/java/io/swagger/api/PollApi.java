@@ -21,17 +21,18 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-03-01T11:48:59.751Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-03-02T19:50:39.116Z[GMT]")
 @Api(value = "poll", description = "the poll API")
 public interface PollApi {
 
-    @ApiOperation(value = "polls the API for finished responses", nickname = "poll", notes = "", tags={  })
+    @ApiOperation(value = "checks job status, providing result (JSON)", nickname = "poll", notes = "TODO", response = String.class, tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "job result"),
+        @ApiResponse(code = 200, message = "JSON of Job State (and Results)", response = String.class),
         @ApiResponse(code = 204, message = "no result yet"),
         @ApiResponse(code = 404, message = "job not found") })
-    @RequestMapping(value = "/poll",
+    @RequestMapping(value = "/poll/{jobId}",
+        produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Void> poll(@ApiParam(value = "Job we are waiting for to finish.",required=true) @PathVariable("jobId") String jobId);
+    ResponseEntity<?> poll(@ApiParam(value = "The jobID that was returned from a polling-based call  (Onboard or Authenticate). ",required=true) @PathVariable("jobId") String jobId);
 
 }

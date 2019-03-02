@@ -8,30 +8,37 @@ import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class VcxApiPoll extends VcxApi {
 
 	private static final Logger logger = LoggerFactory.getLogger(VcxApiPoll.class);
 
-	private static ConcurrentHashMap<String, ResponseEntity<?>> results = new ConcurrentHashMap<String, ResponseEntity<?>> ();
+	private static ConcurrentHashMap<String, ResponseEntity<?>> responses = new ConcurrentHashMap<String, ResponseEntity<?>> ();
 	private static ExecutorService executor = Executors.newCachedThreadPool();
 
 	public static ResponseEntity<?> poll(String jobId) {
 
-		return results.remove(jobId);
+		logger.info("Get response for " + jobId + ": " + responses.contains(jobId));
+
+		ResponseEntity<?> response = responses.remove(jobId);
+		if (response == null) return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+
+		return response;
 	}
 
 	static <T extends ResponseEntity<?>> String submit(Supplier<T> supplier) {
 
-		String jobId = UUID.randomUUID().toString();
+		final String jobId = UUID.randomUUID().toString();
 		CompletableFuture<T> future = CompletableFuture.supplyAsync(supplier, executor);
 
 		future.thenRun(() ->  {
 
 			try {
 
-				results.put(jobId, future.get());
+				logger.info("Add response for " + jobId);
+				responses.put(jobId, future.get());
 			} catch (Exception ex) {
 
 				if (logger.isErrorEnabled()) logger.error(ex.getMessage(), ex);

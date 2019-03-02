@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * CULedgerDDO
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-03-01T11:48:59.751Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-03-02T19:50:39.116Z[GMT]")
 public class CULedgerDDO   {
   @JsonProperty("DID")
   private String DID = null;

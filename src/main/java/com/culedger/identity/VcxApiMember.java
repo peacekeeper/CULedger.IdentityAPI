@@ -1,6 +1,5 @@
 package com.culedger.identity;
 import java.net.URI;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 
@@ -16,7 +15,6 @@ import com.evernym.sdk.vcx.issuer.IssuerApi;
 import com.evernym.sdk.vcx.proof.GetProofResult;
 import com.evernym.sdk.vcx.proof.ProofApi;
 
-import io.swagger.model.CULedgerKeyPair;
 import io.swagger.model.CULedgerMember;
 import io.swagger.model.CULedgerOnboardingData;
 import net.minidev.json.JSONObject;
@@ -61,18 +59,18 @@ public class VcxApiMember extends VcxApi {
 			String jobId = VcxApiPoll.submit(supplier);
 
 			HttpHeaders headers = new HttpHeaders();
-			headers.setLocation(URI.create("/darrellodonnell/CULedger.Identity/0.1.0/poll/" + jobId));
-			ResponseEntity<CULedgerOnboardingData> r = new ResponseEntity<CULedgerOnboardingData>(headers, HttpStatus.ACCEPTED);
-			return r;
+			headers.setLocation(URI.create(VcxConfiguration.getApplicationProperty("server.contextPath") + "/" + jobId));
+			ResponseEntity<CULedgerOnboardingData> response = new ResponseEntity<CULedgerOnboardingData>(headers, HttpStatus.ACCEPTED);
+			return response;
 		} else {
 
 			try { return supplier.get(); } catch (Exception ex) { return new ResponseEntity<CULedgerOnboardingData>(HttpStatus.INTERNAL_SERVER_ERROR); }
 		}
 	}
 
-	public static ResponseEntity<CULedgerOnboardingData> memberConnect(CULedgerOnboardingData cuLedgerOnboardingData, String memberId, String prefer) {
+	public static ResponseEntity<String> memberConnect(CULedgerOnboardingData cuLedgerOnboardingData, String memberId, String prefer) {
 
-		Supplier<ResponseEntity<CULedgerOnboardingData>> supplier = () -> {
+		Supplier<ResponseEntity<String>> supplier = () -> {
 
 			try {
 
@@ -87,12 +85,11 @@ public class VcxApiMember extends VcxApi {
 
 				// done
 
-				CULedgerOnboardingData cuLedgerOnboardingDataResponse = cuLedgerOnboardingData;
-				return new ResponseEntity<CULedgerOnboardingData>(cuLedgerOnboardingDataResponse, HttpStatus.OK);
+				return new ResponseEntity<String>("connected", HttpStatus.OK);
 			} catch (Exception ex) {
 
 				if (logger.isErrorEnabled()) logger.error(ex.getMessage(), ex);
-				return new ResponseEntity<CULedgerOnboardingData>(HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		};
 
@@ -101,117 +98,142 @@ public class VcxApiMember extends VcxApi {
 			String jobId = VcxApiPoll.submit(supplier);
 
 			HttpHeaders headers = new HttpHeaders();
-			headers.setLocation(URI.create("/darrellodonnell/CULedger.Identity/0.1.0/poll/" + jobId));
-			ResponseEntity<CULedgerOnboardingData> r = new ResponseEntity<CULedgerOnboardingData>(headers, HttpStatus.ACCEPTED);
-			return r;
+			headers.setLocation(URI.create(VcxConfiguration.getApplicationProperty("server.contextPath") + "/" + jobId));
+			ResponseEntity<String> response = new ResponseEntity<String>(headers, HttpStatus.ACCEPTED);
+			return response;
 		} else {
 
-			try { return supplier.get(); } catch (Exception ex) { return new ResponseEntity<CULedgerOnboardingData>(HttpStatus.INTERNAL_SERVER_ERROR); }
+			try { return supplier.get(); } catch (Exception ex) { return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR); }
 		}
 	}
 
 	public static ResponseEntity<String> memberSendCredential(String memberId, String prefer) {
 
-		try {
+		Supplier<ResponseEntity<String>> supplier = () -> {
 
-			// read from member DID mapper
+			try {
 
-			Integer connectionHandle = VcxApi.memberDidMapper.getAsConnectionHandle(memberId);
-			if (logger.isInfoEnabled()) logger.info("For member ID " + memberId + " got connection handle " + connectionHandle);
+				// read from member DID mapper
 
-			if (connectionHandle == null) return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+				Integer connectionHandle = VcxApi.memberDidMapper.getAsConnectionHandle(memberId);
+				if (logger.isInfoEnabled()) logger.info("For member ID " + memberId + " got connection handle " + connectionHandle);
 
-			// create credential
+				if (connectionHandle == null) return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 
-			createCredential(memberId, connectionHandle.intValue());
+				// create credential
 
-			// done
+				createCredential(memberId, connectionHandle.intValue());
 
-			return new ResponseEntity<String>(HttpStatus.OK);
-		} catch (Exception ex) {
+				// done
 
-			if (logger.isErrorEnabled()) logger.error(ex.getMessage(), ex);
-			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<String>(HttpStatus.OK);
+			} catch (Exception ex) {
+
+				if (logger.isErrorEnabled()) logger.error(ex.getMessage(), ex);
+				return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		};
+
+		if ("respond-async".equals(prefer)) {
+
+			String jobId = VcxApiPoll.submit(supplier);
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setLocation(URI.create(VcxConfiguration.getApplicationProperty("server.contextPath") + "/" + jobId));
+			ResponseEntity<String> response = new ResponseEntity<String>(headers, HttpStatus.ACCEPTED);
+			return response;
+		} else {
+
+			try { return supplier.get(); } catch (Exception ex) { return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR); }
 		}
 	}
 
 	public static ResponseEntity<CULedgerMember> memberAuthenticate(String memberId, String prefer) {
 
-		try {
+		Supplier<ResponseEntity<CULedgerMember>> supplier = () -> {
 
-			// read from member DID mapper
+			try {
 
-			Integer connectionHandle = VcxApi.memberDidMapper.getAsConnectionHandle(memberId);
-			if (logger.isInfoEnabled()) logger.info("For member ID " + memberId + " got connection handle " + connectionHandle);
+				// read from member DID mapper
 
-			if (connectionHandle == null) return new ResponseEntity<CULedgerMember>(HttpStatus.NOT_FOUND);
+				Integer connectionHandle = VcxApi.memberDidMapper.getAsConnectionHandle(memberId);
+				if (logger.isInfoEnabled()) logger.info("For member ID " + memberId + " got connection handle " + connectionHandle);
 
-			// create proof
+				if (connectionHandle == null) return new ResponseEntity<CULedgerMember>(HttpStatus.NOT_FOUND);
 
-			String sourceId = memberId;
-			String requestedAttrs = requestedAttrs();
-			String requestedPredicates = "";
-			String proofName = "mycuidproof";
-			Integer proofHandle = ProofApi.proofCreate(sourceId, requestedAttrs, requestedPredicates, proofName).get();
+				// create proof
 
-			if (logger.isInfoEnabled()) logger.info("For source ID " + sourceId + " and requested attrs " + requestedAttrs + " and requested predicates " + requestedPredicates + " got proof handle " + proofHandle);
+				String sourceId = memberId;
+				String requestedAttrs = requestedAttrs();
+				String requestedPredicates = "";
+				String proofName = "mycuidproof";
+				Integer proofHandle = ProofApi.proofCreate(sourceId, requestedAttrs, requestedPredicates, proofName).get();
 
-			// send proof request
+				if (logger.isInfoEnabled()) logger.info("For source ID " + sourceId + " and requested attrs " + requestedAttrs + " and requested predicates " + requestedPredicates + " got proof handle " + proofHandle);
 
-			Integer proofSendRequestResult = ProofApi.proofSendRequest(proofHandle, connectionHandle).get();
-			if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " and connection handle " + connectionHandle + " got proof send request result " + proofSendRequestResult);
+				// send proof request
 
-			// update state
+				Integer proofSendRequestResult = ProofApi.proofSendRequest(proofHandle, connectionHandle).get();
+				if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " and connection handle " + connectionHandle + " got proof send request result " + proofSendRequestResult);
 
-			Integer proofUpdateStateResult = ProofApi.proofUpdateState(proofHandle).get();
-			if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " got proof update state result " + proofUpdateStateResult);
+				// update state
 
-			// wait
+				Integer proofUpdateStateResult = ProofApi.proofUpdateState(proofHandle).get();
+				if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " got proof update state result " + proofUpdateStateResult);
 
-			long waitProofRequest = System.currentTimeMillis();
-			while (true) {
+				// wait
 
-				long timeout = VcxConfiguration.VCX_TIMEOUT_PROOFREQUEST - (System.currentTimeMillis() - waitProofRequest) / 1000;
-				if (timeout <= 0) throw new InterruptedException("Timeout while waiting for proof.");
+				long waitProofRequest = System.currentTimeMillis();
+				while (true) {
 
-				Integer proofWaitGetStateResult = ProofApi.proofGetState(proofHandle).get();
-				if (logger.isInfoEnabled()) logger.info("WAIT: For proof handle " + connectionHandle + " got state result " + proofWaitGetStateResult);
+					long timeout = VcxConfiguration.VCX_TIMEOUT_PROOFREQUEST - (System.currentTimeMillis() - waitProofRequest) / 1000;
+					if (timeout <= 0) throw new InterruptedException("Timeout while waiting for proof.");
 
-				if (proofWaitGetStateResult.intValue() != VcxApi.VCX_OFFERSENT) break;
-				Thread.sleep(500);
+					Integer proofWaitGetStateResult = ProofApi.proofGetState(proofHandle).get();
+					if (logger.isInfoEnabled()) logger.info("WAIT: For proof handle " + connectionHandle + " got state result " + proofWaitGetStateResult);
 
-				Integer proofWaitUpdateStateResult = ProofApi.proofUpdateState(proofHandle).get();
-				if (logger.isInfoEnabled()) logger.info("WAIT: For proof handle " + proofHandle + " got proof update state result " + proofWaitUpdateStateResult + " (TIMEOUT: " + timeout + ")");
-				Thread.sleep(500);
+					if (proofWaitGetStateResult.intValue() != VcxApi.VCX_OFFERSENT) break;
+					Thread.sleep(500);
+
+					Integer proofWaitUpdateStateResult = ProofApi.proofUpdateState(proofHandle).get();
+					if (logger.isInfoEnabled()) logger.info("WAIT: For proof handle " + proofHandle + " got proof update state result " + proofWaitUpdateStateResult + " (TIMEOUT: " + timeout + ")");
+					Thread.sleep(500);
+				}
+
+				// get proof
+
+				GetProofResult getProofResult = ProofApi.getProof(proofHandle, connectionHandle).get();
+				if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " and connection handle " + connectionHandle + " got proof result " + getProofResult + " with response data " + getProofResult.getResponse_data() + " and proof state " + getProofResult.getProof_state());
+
+				if (getProofResult.getProof_state() != VcxApi.PROOFSTATE_VERIFIED) {
+
+					return new ResponseEntity<CULedgerMember>(HttpStatus.UNAUTHORIZED);
+				}
+
+				// done
+
+				CULedgerMember cuLedgerMember = new CULedgerMember();
+				cuLedgerMember.setMemberId(memberId);
+				return new ResponseEntity<CULedgerMember>(cuLedgerMember, HttpStatus.OK);
+			} catch (Exception ex) {
+
+				if (logger.isErrorEnabled()) logger.error(ex.getMessage(), ex);
+				return new ResponseEntity<CULedgerMember>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
+		};
 
-			// get proof
+		if ("respond-async".equals(prefer)) {
 
-			GetProofResult getProofResult = ProofApi.getProof(proofHandle, connectionHandle).get();
-			if (logger.isInfoEnabled()) logger.info("For proof handle " + proofHandle + " and connection handle " + connectionHandle + " got proof result " + getProofResult + " with response data " + getProofResult.getResponse_data() + " and proof state " + getProofResult.getProof_state());
+			String jobId = VcxApiPoll.submit(supplier);
 
-			if (getProofResult.getProof_state() != VcxApi.PROOFSTATE_VERIFIED) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setLocation(URI.create(VcxConfiguration.getApplicationProperty("server.contextPath") + "/" + jobId));
+			ResponseEntity<CULedgerMember> response = new ResponseEntity<CULedgerMember>(headers, HttpStatus.ACCEPTED);
+			return response;
+		} else {
 
-				return new ResponseEntity<CULedgerMember>(HttpStatus.UNAUTHORIZED);
-			}
-
-			// done
-
-			CULedgerMember cuLedgerMember = new CULedgerMember();
-			cuLedgerMember.setMemberId(memberId);
-			return new ResponseEntity<CULedgerMember>(cuLedgerMember, HttpStatus.OK);
-		} catch (Exception ex) {
-
-			if (logger.isErrorEnabled()) logger.error(ex.getMessage(), ex);
-			return new ResponseEntity<CULedgerMember>(HttpStatus.INTERNAL_SERVER_ERROR);
+			try { return supplier.get(); } catch (Exception ex) { return new ResponseEntity<CULedgerMember>(HttpStatus.INTERNAL_SERVER_ERROR); }
 		}
-	}
-
-	public static ResponseEntity<List<CULedgerKeyPair>> listConfigSettings() {
-
-		List<CULedgerKeyPair> configSettings = VcxConfiguration.makeCULedgerKeyPairs();
-
-		return new ResponseEntity<List<CULedgerKeyPair>>(configSettings, HttpStatus.OK);
 	}
 
 	/*
@@ -229,10 +251,10 @@ public class VcxApiMember extends VcxApi {
 
 		// connect
 
-		String memberPhoneNumber = cuLedgerOnboardingData.getMemberPhoneNumber();
+		String phoneNumber = cuLedgerOnboardingData.getPhoneNumber();
 		JSONObject jsonConnectionType = new JSONObject();
 		jsonConnectionType.put("connection_type", "SMS");
-		jsonConnectionType.put("phone", memberPhoneNumber);
+		jsonConnectionType.put("phone", phoneNumber);
 		String connectionType = jsonConnectionType.toJSONString();
 		String connectionDetails = ConnectionApi.vcxConnectionConnect(connectionHandle, connectionType).get();
 
