@@ -20,18 +20,29 @@ public class VcxApiPoll extends VcxApi {
 
 	public static ResponseEntity<?> poll(String jobId) {
 
-		logger.info("Get response for " + jobId + ": " + responses.contains(jobId));
+		ResponseEntity<?> responseEntity = responses.get(jobId);
 
-		ResponseEntity<?> response = responses.remove(jobId);
-		if (response == null) return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		logger.info("Get response for " + jobId + ": " + responseEntity);
 
-		return response;
+		if (responseEntity == null) {
+
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		} else if (HttpStatus.NO_CONTENT.equals(responseEntity.getStatusCode())) {
+
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		} else {
+
+			responses.remove(jobId);
+			return responseEntity;
+		}
 	}
 
 	static <T extends ResponseEntity<?>> String submit(Supplier<T> supplier) {
 
 		final String jobId = UUID.randomUUID().toString();
 		CompletableFuture<T> future = CompletableFuture.supplyAsync(supplier, executor);
+
+		responses.put(jobId, new ResponseEntity<Void>(HttpStatus.NO_CONTENT));
 
 		future.thenRun(() ->  {
 
