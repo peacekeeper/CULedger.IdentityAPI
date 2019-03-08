@@ -29,3 +29,31 @@ One improvement to the logging set up that I usually implement on projects is th
 One draw back to using this feature is that it is thread based so that when servers implement thread pooling to support callbacks or other features, it may not provide the data we're looking for or it may simply provide the wrong context in the event of a recycled thread.
 
 So we should consider this addition in light of these limitations and proceed accordingly.
+
+
+# ROLLING 
+https://logging.apache.org/log4j/2.x/manual/appenders.html#RollingFileAppender
+
+The Following creates a half-daily (i.e. 2 logs per day) log file. 
+
+```java
+log4j.rootLogger=DEBUG, STDOUT, FILE
+
+log4j.appender.STDOUT=org.apache.log4j.ConsoleAppender
+log4j.appender.STDOUT.layout=org.apache.log4j.PatternLayout
+log4j.appender.STDOUT.layout.ConversionPattern=%d{HH:mm:ss,SSS} - %X{mdcData} %5p [%c] - %m%n
+
+log4j.appender.Appender2=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.FILE.File=log4j.log
+log4j.appender.Appender2.DatePattern='.'yyyy-MM-dd-a
+log4j.appender.FILE.layout=org.apache.log4j.PatternLayout
+log4j.appender.FILE.layout.ConversionPattern=%d{HH:mm:ss,SSS} - %X{mdcData} %5p [%c] - %m%n
+
+log4j.logger.org.apache=INFO, STDOUT, FILE
+log4j.logger.org.eclipse=INFO, STDOUT, FILE
+log4j.logger.org.mortbay=INFO, STDOUT, FILE
+log4j.logger.org.springframework=INFO, STDOUT, FILE
+log4j.logger.springfox=INFO, STDOUT, FILE
+log4j.logger.io.swagger=DEBUG, STDOUT, FILE
+```
+
