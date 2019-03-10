@@ -2,11 +2,13 @@ package com.culedger.identity;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
@@ -32,7 +34,8 @@ public class VcxConfiguration {
 	public static final String VCX_SCHEMA_ID;
 	public static final String VCX_CREDDEF_ID;
 
-	public static JSONObject jsonObjectVcxConfig;
+	private static final JSONObject jsonObjectVcxConfig;
+	private static final Properties applicationProperties;
 
 	public static void init() {
 
@@ -104,10 +107,24 @@ public class VcxConfiguration {
 
 			jsonObjectVcxConfig = new JSONObject(IOUtils.toString(new InputStreamReader(new FileInputStream(new File("/opt/sovrin/vcxconfig.json")), StandardCharsets.UTF_8)));
 			if (logger.isInfoEnabled()) logger.info("jsonObjectVcxConfig: " + jsonObjectVcxConfig.toString());
+
+			applicationProperties = new Properties();
+			InputStream inputStream = VcxConfiguration.class.getResourceAsStream("/application.properties");
+			applicationProperties.load(inputStream);
 		} catch (Exception ex) {
 
 			throw new RuntimeException(ex.getMessage(), ex);
 		}
+	}
+
+	public static String jsonObjectVcxConfigOptString(String name) {
+
+		return jsonObjectVcxConfig.optString(name);
+	}
+
+	public static String getApplicationProperty(String key) {
+
+		return applicationProperties.getProperty(key);
 	}
 
 	static List<CULedgerKeyPair> makeCULedgerKeyPairs() {

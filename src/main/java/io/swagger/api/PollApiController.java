@@ -1,6 +1,6 @@
 package io.swagger.api;
 
-import com.culedger.identity.VcxApiHeartbeat;
+import com.culedger.identity.VcxApiPoll;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -23,23 +23,23 @@ import java.util.List;
 import java.util.Map;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-03-02T19:50:39.116Z[GMT]")
 @Controller
-public class HeartbeatApiController implements HeartbeatApi {
+public class PollApiController implements PollApi {
 
-    private static final Logger log = LoggerFactory.getLogger(HeartbeatApiController.class);
+    private static final Logger log = LoggerFactory.getLogger(PollApiController.class);
 
     private final ObjectMapper objectMapper;
 
     private final HttpServletRequest request;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public HeartbeatApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public PollApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
     }
 
-    public ResponseEntity<String> getHeartbeat() {
+    public ResponseEntity<?> poll(@ApiParam(value = "The jobID that was returned from a polling-based call  (Onboard or Authenticate). ",required=true) @PathVariable("jobId") String jobId) {
         String accept = request.getHeader("Accept");
-        return VcxApiHeartbeat.getHeartbeat();
+        return VcxApiPoll.poll(jobId);
     }
 
 }

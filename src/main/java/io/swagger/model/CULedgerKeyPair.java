@@ -13,8 +13,7 @@ import javax.validation.constraints.*;
  * CULedgerKeyPair
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-30T11:45:41.226Z[GMT]")
-
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-03-02T19:50:39.116Z[GMT]")
 public class CULedgerKeyPair   {
   @JsonProperty("valueName")
   private String valueName = null;
@@ -32,7 +31,6 @@ public class CULedgerKeyPair   {
    * @return valueName
   **/
   @ApiModelProperty(value = "")
-
 
   public String getValueName() {
     return valueName;
@@ -52,7 +50,6 @@ public class CULedgerKeyPair   {
    * @return value
   **/
   @ApiModelProperty(value = "")
-
 
   public String getValue() {
     return value;
@@ -103,4 +100,3 @@ public class CULedgerKeyPair   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

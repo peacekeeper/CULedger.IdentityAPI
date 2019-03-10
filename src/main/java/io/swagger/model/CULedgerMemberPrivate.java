@@ -15,8 +15,7 @@ import javax.validation.constraints.*;
  * CULedgerMemberPrivate
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-30T11:45:41.226Z[GMT]")
-
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-03-02T19:50:39.116Z[GMT]")
 public class CULedgerMemberPrivate   {
   @JsonProperty("memberPrivateDID")
   private String memberPrivateDID = null;
@@ -66,7 +65,6 @@ public class CULedgerMemberPrivate   {
       return null;
     }
   }
-
   @JsonProperty("memberStatus")
   private MemberStatusEnum memberStatus = null;
 
@@ -81,7 +79,6 @@ public class CULedgerMemberPrivate   {
   **/
   @ApiModelProperty(example = "fake-DID-here", required = true, value = "")
   @NotNull
-
 
   public String getMemberPrivateDID() {
     return memberPrivateDID;
@@ -103,7 +100,6 @@ public class CULedgerMemberPrivate   {
   @ApiModelProperty(example = "42", required = true, value = "If provided by FI this is the Member's Identifier in the external system. Otherwise it is system generated. See CONFIG_DETAIL.ID_TYPE")
   @NotNull
 
-
   public String getMemberId() {
     return memberId;
   }
@@ -124,7 +120,6 @@ public class CULedgerMemberPrivate   {
   @ApiModelProperty(value = "")
 
   @Valid
-
   public CULedgerDDO getMemberDDO() {
     return memberDDO;
   }
@@ -144,7 +139,6 @@ public class CULedgerMemberPrivate   {
   **/
   @ApiModelProperty(example = "DDDDSDAFSDFASDF", value = "")
 
-
   public String getInstitutionPrivateKey() {
     return institutionPrivateKey;
   }
@@ -163,7 +157,6 @@ public class CULedgerMemberPrivate   {
    * @return memberStatus
   **/
   @ApiModelProperty(example = "onboarded", value = "")
-
 
   public MemberStatusEnum getMemberStatus() {
     return memberStatus;
@@ -220,4 +213,3 @@ public class CULedgerMemberPrivate   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

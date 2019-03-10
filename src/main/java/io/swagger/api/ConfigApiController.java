@@ -2,7 +2,6 @@ package io.swagger.api;
 
 import io.swagger.model.CULedgerKeyPair;
 
-import com.culedger.identity.VcxApi;
 import com.culedger.identity.VcxApiConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -24,8 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-30T11:45:41.226Z[GMT]")
-
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-03-02T19:50:39.116Z[GMT]")
 @Controller
 public class ConfigApiController implements ConfigApi {
 
@@ -47,10 +45,11 @@ public class ConfigApiController implements ConfigApi {
     }
 
     public ResponseEntity<List<CULedgerKeyPair>> listConfigSettings() {
+        String accept = request.getHeader("Accept");
         return VcxApiConfig.listConfigSettings();
     }
 
-    public ResponseEntity<String> setConfigValue(@ApiParam(value = "" ,required=true )  @Valid @RequestBody String body, @ApiParam(value = "valueName in valueName/value keypair",required=true) @PathVariable("valueName") String valueName) {
+    public ResponseEntity<String> setConfigValue(@ApiParam(value = "" ,required=true )  @Valid @RequestBody String body,@ApiParam(value = "valueName in valueName/value keypair",required=true) @PathVariable("valueName") String valueName) {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
     }
