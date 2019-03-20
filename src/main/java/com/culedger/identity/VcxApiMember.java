@@ -314,12 +314,12 @@ public class VcxApiMember extends VcxApi {
 		// send credential offer
 
 		Integer issuerSendCredentialOfferResult = IssuerApi.issuerSendcredentialOffer(credentialHandle, connectionHandle).get();
-		if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " and connection handle " + connectionHandle + " got issuer send credential offer result " + issuerSendCredentialOfferResult);
+		if (logger.isInfoEnabled()) logger.info("For credential handle (offer) " + credentialHandle + " and connection handle " + connectionHandle + " got issuer send credential offer result " + issuerSendCredentialOfferResult);
 
 		// update state
 
 		Integer credentialUpdateStateResult = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();
-		if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " got credential update state result " + credentialUpdateStateResult);
+		if (logger.isInfoEnabled()) logger.info("For credential handle (offer) " + credentialHandle + " got credential update state result " + credentialUpdateStateResult);
 
 		// wait
 
@@ -330,25 +330,25 @@ public class VcxApiMember extends VcxApi {
 			if (timeout <= 0) throw new InterruptedException("Timeout while waiting for credential offer.");
 
 			Integer credentialWaitGetStateResult = IssuerApi.issuerCredntialGetState(credentialHandle).get();
-			if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + connectionHandle + " got state result " + credentialWaitGetStateResult);
+			if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle (offer) " + connectionHandle + " got state result " + credentialWaitGetStateResult);
 
 			if (credentialWaitGetStateResult.intValue() != VcxApi.VCX_OFFERSENT) break;
 			Thread.sleep(500);
 
 			Integer credentialWaitUpdateStateResult = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();
-			if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + credentialHandle + " got credential update state result " + credentialWaitUpdateStateResult + " (TIMEOUT: " + timeout + ")");
+			if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle (offer) " + credentialHandle + " got credential update state result " + credentialWaitUpdateStateResult + " (TIMEOUT: " + timeout + ")");
 			Thread.sleep(500);
 		}
 
 		// send credential
 
 		Integer issuerSendCredentialResult = IssuerApi.issuerSendCredential(credentialHandle, connectionHandle).get();
-		if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " and connection handle " + connectionHandle + " got issuer send credential result " + issuerSendCredentialResult);
+		if (logger.isInfoEnabled()) logger.info("For credential handle (send) " + credentialHandle + " and connection handle " + connectionHandle + " got issuer send credential result " + issuerSendCredentialResult);
 
 		// update state
 
 		Integer credentialUpdateStateResult2 = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();
-		if (logger.isInfoEnabled()) logger.info("For credential handle " + credentialHandle + " got credential update state result " + credentialUpdateStateResult2);
+		if (logger.isInfoEnabled()) logger.info("For credential handle (send) " + credentialHandle + " got credential update state result " + credentialUpdateStateResult2);
 
 		// wait
 
@@ -359,13 +359,13 @@ public class VcxApiMember extends VcxApi {
 			if (timeout <= 0) throw new InterruptedException("Timeout while waiting for credential send.");
 
 			Integer credentialWaitGetStateResult = IssuerApi.issuerCredntialGetState(credentialHandle).get();
-			if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + credentialHandle + " got state result " + credentialWaitGetStateResult);
+			if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle (send) " + credentialHandle + " got state result " + credentialWaitGetStateResult);
 
 			if (credentialWaitGetStateResult.intValue() != VcxApi.VCX_REQUESTRECEIVED) break;
 			Thread.sleep(500);
 
 			Integer credentialWaitUpdateStateResult = IssuerApi.issuerCredntialUpdateState(credentialHandle).get();
-			if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle " + credentialHandle + " got credential update state result " + credentialWaitUpdateStateResult + " (TIMEOUT: " + timeout + ")");
+			if (logger.isInfoEnabled()) logger.info("WAIT: For credential handle (send) " + credentialHandle + " got credential update state result " + credentialWaitUpdateStateResult + " (TIMEOUT: " + timeout + ")");
 			Thread.sleep(500);
 		}
 	}
